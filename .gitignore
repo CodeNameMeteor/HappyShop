@@ -11,6 +11,8 @@ target/
 *.iws
 *.iml
 *.ipr
+happyShopDB/log/*
+happyShopDB/seg0/*
 
 ### Eclipse ###
 .apt_generated
