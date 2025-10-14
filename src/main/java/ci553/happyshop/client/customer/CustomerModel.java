@@ -70,7 +70,16 @@ public class CustomerModel {
             //TODO
             // 1. Merges items with the same product ID (combining their quantities).
             // 2. Sorts the products in the trolley by product ID.
-            trolley.add(theProduct);
+            if(trolley.contains(theProduct))
+            {
+                theProduct.incrementOrderedQuantity();
+                var productIndex = trolley.indexOf(theProduct);
+                trolley.set(productIndex, theProduct  );
+            }
+            else{
+                trolley.add(theProduct);
+            }
+            trolley.sort(null);
             displayTaTrolley = ProductListFormatter.buildString(trolley); //build a String for trolley so that we can show it
         }
         else{

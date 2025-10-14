@@ -44,6 +44,7 @@ public class Product implements Comparable<Product> {
     public int getStockQuantity() { return stockQuantity;}
 
     //a setter method
+    public void incrementOrderedQuantity(){this.orderedQuantity++;}
     public void setOrderedQuantity(int orderedQuantity) {
         this.orderedQuantity = orderedQuantity;
     }
