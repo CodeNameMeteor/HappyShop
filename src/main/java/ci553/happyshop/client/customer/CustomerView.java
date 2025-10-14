@@ -181,6 +181,13 @@ public class CustomerView  {
             if(action.equals("OK & Close")){
                 showTrolleyOrReceiptPage(vbTrolleyPage);
             }
+            /*
+            if(action.equals("Check Out"))
+            {
+                showTrolleyOrReceiptPage(vbReceiptPage);
+            }
+            */
+
             cusController.doAction(action);
         }
         catch(SQLException e){

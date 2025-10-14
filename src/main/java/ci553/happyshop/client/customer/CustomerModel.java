@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.scene.control.Alert;
 
 /**
  * TODO
@@ -37,8 +38,15 @@ public class CustomerModel {
     //SELECT productID, description, image, unitPrice,inStock quantity
     void search() throws SQLException {
         String productId = cusView.tfId.getText().trim();
-        if(!productId.isEmpty()){
-            theProduct = databaseRW.searchByProductId(productId); //search database
+        String productName = cusView.tfName.getText().trim();
+        if(!productId.isEmpty() || !productName.isEmpty()){
+            if(!productId.isEmpty())
+            {
+                theProduct = databaseRW.searchByProductId(productId); //search database
+            }
+            else {
+                theProduct = databaseRW.searchByProductName(productName);
+            }
             if(theProduct != null && theProduct.getStockQuantity()>0){
                 double unitPrice = theProduct.getUnitPrice();
                 String description = theProduct.getProductDescription();
@@ -130,7 +138,17 @@ public class CustomerModel {
                 // 2. Trigger a message window to notify the customer about the insufficient stock, rather than directly changing displayLaSearchResult.
                 //You can use the provided RemoveProductNotifier class and its showRemovalMsg method for this purpose.
                 //remember close the message window where appropriate (using method closeNotifierWindow() of RemoveProductNotifier class)
-                displayLaSearchResult = "Checkout failed due to insufficient stock for the following products:\n" + errorMsg.toString();
+                for(Product p : insufficientProducts) {
+                    if (p.getOrderedQuantity() > p.getStockQuantity()) {
+                        trolley.remove(p);
+                    }
+                }
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Error");
+                alert.setHeaderText("Checkout failed due to insufficient stock for the following products:");
+                //alert.setContentText("Checkout failed due to insufficient stock for the following products:\n");
+                alert.showAndWait();
+                //displayLaSearchResult = "Checkout failed due to insufficient stock for the following products:\n" + errorMsg.toString();
                 System.out.println("stock is not enough");
             }
         }

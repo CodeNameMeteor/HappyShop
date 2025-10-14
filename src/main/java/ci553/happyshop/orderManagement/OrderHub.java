@@ -68,8 +68,11 @@ public class OrderHub  {
     private OrderHub() {}
     public static OrderHub getOrderHub() {
         if (orderHub == null)
+        {
             orderHub = new OrderHub();
             return orderHub;
+        }
+        return orderHub;
     }
 
     //Creates a new order using the provided list of products.

@@ -55,7 +55,7 @@ public class Main extends Application {
         initializeOrderMap();
 
         startWarehouseClient();
-        startWarehouseClient();
+        //startWarehouseClient();
 
         startEmergencyExit();
     }

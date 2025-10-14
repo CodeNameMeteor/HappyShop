@@ -44,6 +44,8 @@ public interface DatabaseRW {
      */
     Product searchByProductId(String productId) throws SQLException;
 
+    Product searchByProductName(String productName) throws SQLException;
+
     /**
      * Attempts to purchase (reduce stocks of) the given list of products.
      * Behavior:

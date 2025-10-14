@@ -43,7 +43,30 @@ public class DerbyRW implements DatabaseRW {
         }
         return productList;
     }
+    //search  by product Id, return a product or null
+    public Product searchByProductName(String proName) throws SQLException {
+        Product product = null;
+        String query = "SELECT * FROM ProductTable WHERE description LIKE ?";
 
+        try (Connection conn = DriverManager.getConnection(dbURL);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            // Set the productId parameter
+            pstmt.setString(1, proName);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()){
+                    product= makeProObjFromDbRecord(rs);
+                    System.out.println("Product " + proName + " found.");
+                }else{
+                    System.out.println("Product " + proName + " not found.");
+                }
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return product;
+    }
     //search  by product Id, return a product or null
     public Product searchByProductId(String proId) throws SQLException {
         Product product = null;
