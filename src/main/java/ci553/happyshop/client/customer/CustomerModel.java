@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
 import javafx.scene.control.Alert;
 
 /**
@@ -139,7 +141,7 @@ public class CustomerModel {
                 //You can use the provided RemoveProductNotifier class and its showRemovalMsg method for this purpose.
                 //remember close the message window where appropriate (using method closeNotifierWindow() of RemoveProductNotifier class)
                 for(Product p : insufficientProducts) {
-                    trolley.remove(0);
+                    trolley.removeIf(pt -> Objects.equals(pt.getProductId(), p.getProductId()));
                 }
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -149,6 +151,7 @@ public class CustomerModel {
                 alert.showAndWait();
                 //displayLaSearchResult = "Checkout failed due to insufficient stock for the following products:\n" + errorMsg.toString();
                 System.out.println("Insufficient stock");
+                displayTaTrolley = "Your trolley is empty";
             }
         }
         else{
