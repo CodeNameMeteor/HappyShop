@@ -151,7 +151,12 @@ public class CustomerModel {
                 alert.showAndWait();
                 //displayLaSearchResult = "Checkout failed due to insufficient stock for the following products:\n" + errorMsg.toString();
                 System.out.println("Insufficient stock");
-                displayTaTrolley = "Your trolley is empty";
+                if(trolley.isEmpty()) {
+                    displayTaTrolley = "Your trolley is empty";
+                }
+                else{
+                    displayTaTrolley = ProductListFormatter.buildString(trolley);
+                }
             }
         }
         else{
