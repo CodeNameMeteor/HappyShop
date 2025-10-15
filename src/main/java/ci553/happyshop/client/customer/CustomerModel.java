@@ -182,7 +182,8 @@ public class CustomerModel {
                 grouped.put(id,new Product(p.getProductId(),p.getProductDescription(),
                         p.getProductImageName(),p.getUnitPrice(),p.getStockQuantity()));
                 Product existing = grouped.get(id);
-                existing.setOrderedQuantity(existing.getOrderedQuantity() + p.getOrderedQuantity());
+                existing.setOrderedQuantity(p.getOrderedQuantity());
+                p.setOrderedQuantity(1);
             }
         }
         return new ArrayList<>(grouped.values());
