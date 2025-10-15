@@ -62,7 +62,7 @@ public class WarehouseModel {
 
     void doSearch() throws SQLException {
         String keyword = view.tfSearchKeyword.getText().trim();
-        if (!keyword.equals("")) {
+        if (!keyword.isEmpty()) {
             productList = databaseRW.searchProduct(keyword);
         }
         else{
