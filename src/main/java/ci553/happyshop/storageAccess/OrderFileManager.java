@@ -72,13 +72,8 @@ public class OrderFileManager {
         if (Files.exists(sourcePath)) {
             updateOrderStateAndTime(sourceDir,orderId,newState); //Edit the file to update order state and add time
             if(!sourceDir.equals(targetDir)) //Move the file only if the source and destination are different
-                try {
-                    Files.move(sourcePath, targetPath);
-                    System.out.println("File moved successfully.");
-                } catch (IOException e) {
-                    System.err.println("Move failed: " + e.getMessage());
-                }
-            return true;
+                Files.move(sourcePath, targetPath);
+                return true;
         }
         else{
             System.out.println(sourcePath + " not found in ");
