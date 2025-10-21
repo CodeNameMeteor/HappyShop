@@ -127,7 +127,7 @@ public class WarehouseModel {
            theNewProId = null;
        }
     }
-    void doSummit() throws SQLException, IOException {
+    void doSubmit() throws SQLException, IOException {
         if(view.theProFormMode.equals("EDIT")){
             doSubmitEdit();
         }
@@ -147,15 +147,14 @@ public class WarehouseModel {
             String textStock =view.tfStockEdit.getText().trim();
             String description = view.taDescriptionEdit.getText().trim();
 
-            if(view.isUserSelectedImageEdit == true){  //if the user changed image
+            if(view.isUserSelectedImageEdit){  //if the user changed image
                 ImageFileManager.deleteImageFile(StorageLocation.imageFolder, imageName); //delete the old image
                 //copy the user selected image to project image folder
                 //we use productId as image name, but we need to get its extension from the user selected image
-                String newImageNameWithExtension = ImageFileManager.copyFileToDestination(view.userSelectedImageUriEdit, StorageLocation.imageFolder,id);
-                imageName = newImageNameWithExtension;
+                imageName = ImageFileManager.copyFileToDestination(view.userSelectedImageUriEdit, StorageLocation.imageFolder,id);
             }
 
-            if(validateInputEditChild(textPrice,textStock,description)==false){
+            if(!validateInputEditChild(textPrice,textStock,description)){
                 updateView(UpdateForAction.ShowInputErrorMsg);
             }
             else{
@@ -178,7 +177,7 @@ public class WarehouseModel {
         int newStock =oldStock;
         String TextChangeBy = view.tfChangeByEdit.getText().trim();
         if(!TextChangeBy.isEmpty()){
-            if(validateInputChangeStockBy(TextChangeBy)==false){
+            if(!validateInputChangeStockBy(TextChangeBy)){
                 updateView(UpdateForAction.ShowInputErrorMsg);
             } else{
                 int changeBy = Integer.parseInt(TextChangeBy);
@@ -205,7 +204,7 @@ public class WarehouseModel {
             errorMessage.append("Invalid stock quantity format.\n");
         }
         // Show Alert if there are errors
-        if (errorMessage.length() > 0) {
+        if (!errorMessage.isEmpty()) {
             displayInputErrorMsg = errorMessage.toString();
             return false;
         }
@@ -223,7 +222,7 @@ public class WarehouseModel {
         String iPath = view.imageUriNewPro; //image Path from the imageChooser in View class
 
         //validate input
-        if (validateInputNewProChild(theNewProId, textPrice, textStock, description, iPath) ==false) {
+        if (!validateInputNewProChild(theNewProId, textPrice, textStock, description, iPath)) {
             updateView(UpdateForAction.ShowInputErrorMsg);
         } else {
             //copy the user selected image to project image folder and using productId as image name
@@ -282,7 +281,7 @@ public class WarehouseModel {
             errorMessage.append("\u2022 Product description cannot be empty.");
 
         // Show Alert if there are errors
-        if (errorMessage.length() > 0) {
+        if (!errorMessage.isEmpty()) {
             displayInputErrorMsg = errorMessage.toString();
             return false;
         }
@@ -299,7 +298,7 @@ public class WarehouseModel {
 
         //check Id is unique
         if(!databaseRW.isProIdAvailable(id))
-            errorMessage.append("\u2022 Product ID " + id + " is not available.\n");
+            errorMessage.append("\u2022 Product ID ").append(id).append(" is not available.\n");
 
         // Validate Price (must be a positive number, and two digitals )
         try {
@@ -338,7 +337,7 @@ public class WarehouseModel {
             errorMessage.append("\u2022 An image must be selected.");
 
         // Show Alert if there are errors
-        if (errorMessage.length() > 0) {
+        if (!errorMessage.isEmpty()) {
             displayInputErrorMsg = errorMessage.toString();
             return false;
         }

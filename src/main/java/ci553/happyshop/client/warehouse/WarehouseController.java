@@ -24,7 +24,7 @@ public class WarehouseController {
                 model.doChangeStockBy("sub");
                 break;
             case "Submit":
-                model.doSummit();
+                model.doSubmit();
                 break;
             case "Cancel":  // clear the editChild
                 model.doCancel();
