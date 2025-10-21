@@ -76,7 +76,7 @@ public class CustomerView  {
     }
 
     private VBox createSearchPage() {
-        Label laPageTitle = new Label("Search by Product ID/Name");
+        Label laPageTitle = new Label("Search by Product ID");
         laPageTitle.setStyle(UIStyle.labelTitleStyle);
 
         Label laId = new Label("ID:      ");
@@ -89,7 +89,7 @@ public class CustomerView  {
         Label laName = new Label("Name:");
         laName.setStyle(UIStyle.labelStyle);
         tfName = new TextField();
-        tfName.setPromptText("implement it if you want");
+        tfName.setPromptText("Search By Product Name");
         tfName.setStyle(UIStyle.textFiledStyle);
         HBox hbName = new HBox(10, laName, tfName);
 

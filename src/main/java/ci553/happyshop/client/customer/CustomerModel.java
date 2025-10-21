@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
 import javafx.scene.control.Alert;
 
 /**
@@ -45,7 +47,7 @@ public class CustomerModel {
                 theProduct = databaseRW.searchByProductId(productId); //search database
             }
             else {
-                theProduct = databaseRW.searchByProductName(productName);
+                theProduct = databaseRW.searchProduct(productName).getFirst();
             }
             if(theProduct != null && theProduct.getStockQuantity()>0){
                 double unitPrice = theProduct.getUnitPrice();
@@ -139,17 +141,22 @@ public class CustomerModel {
                 //You can use the provided RemoveProductNotifier class and its showRemovalMsg method for this purpose.
                 //remember close the message window where appropriate (using method closeNotifierWindow() of RemoveProductNotifier class)
                 for(Product p : insufficientProducts) {
-                    if (p.getOrderedQuantity() > p.getStockQuantity()) {
-                        trolley.remove(p);
-                    }
+                    trolley.removeIf(pt -> Objects.equals(pt.getProductId(), p.getProductId()));
                 }
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Error");
                 alert.setHeaderText("Checkout failed due to insufficient stock for the following products:");
                 //alert.setContentText("Checkout failed due to insufficient stock for the following products:\n");
                 alert.showAndWait();
                 //displayLaSearchResult = "Checkout failed due to insufficient stock for the following products:\n" + errorMsg.toString();
-                System.out.println("stock is not enough");
+                System.out.println("Insufficient stock");
+                if(trolley.isEmpty()) {
+                    displayTaTrolley = "Your trolley is empty";
+                }
+                else{
+                    displayTaTrolley = ProductListFormatter.buildString(trolley);
+                }
             }
         }
         else{
@@ -174,6 +181,9 @@ public class CustomerModel {
                 // Make a shallow copy to avoid modifying the original
                 grouped.put(id,new Product(p.getProductId(),p.getProductDescription(),
                         p.getProductImageName(),p.getUnitPrice(),p.getStockQuantity()));
+                Product existing = grouped.get(id);
+                existing.setOrderedQuantity(p.getOrderedQuantity());
+                p.setOrderedQuantity(1);
             }
         }
         return new ArrayList<>(grouped.values());
