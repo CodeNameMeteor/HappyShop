@@ -183,7 +183,7 @@ public class OrderHub  {
         if(state.equals(OrderState.Progressing)) {
             return OrderFileManager.readOrderFile(progressingPath,orderId);
         }else{
-            return "the fuction is only for picker";
+            return "the function is only for picker";
         }
     }
 
@@ -192,20 +192,20 @@ public class OrderHub  {
     public void initializeOrderMap(){
         ArrayList<Integer> orderedIds = orderIdsLoader(orderedPath);
         ArrayList<Integer> progressingIds = orderIdsLoader(progressingPath);
-        if(orderedIds.size()>0){
+        if(!orderedIds.isEmpty()){
             for(Integer orderId : orderedIds){
                 orderMap.put(orderId, OrderState.Ordered);
             }
         }
-        if(progressingIds.size()>0){
+        if(!progressingIds.isEmpty()){
             for(Integer orderId : progressingIds){
                 orderMap.put(orderId, OrderState.Progressing);
             }
         }
         notifyOrderTrackers();
         notifyPickerModels();
-        System.out.println("orderMap initilized. "+ orderMap.size() + " orders in total, including:");
-        System.out.println( orderedIds.size() + " Ordered orders, " +progressingIds.size() + " Progressing orders " );
+        System.out.println("orderMap initialized. "+ orderMap.size() + " orders in total, including:");
+        System.out.println( orderedIds.size() + " Orders, " +progressingIds.size() + " Orders progressing " );
     }
 
     // Loads a list of order IDs from the specified directory.

@@ -31,8 +31,6 @@ public class CustomerModel {
     private Product theProduct =null; // product found from search
     private ArrayList<Product> trolley =  new ArrayList<>(); // a list of products in trolley
 
-    // Four UI elements to be passed to CustomerView for display updates.
-    private String imageName = "imageHolder.jpg";                // Image to show in product preview (Search Page)
     private String displayLaSearchResult = "No Product was searched yet"; // Label showing search result message (Search Page)
     private String displayTaTrolley = "";                                // Text area content showing current trolley items (Trolley Page)
     private String displayTaReceipt = "";                                // Text area content showing receipt after checkout (Receipt Page)
@@ -127,7 +125,7 @@ public class CustomerModel {
             else{ // Some products have insufficient stock — build an error message to inform the customer
                 StringBuilder errorMsg = new StringBuilder();
                 for(Product p : insufficientProducts){
-                    errorMsg.append("\u2022 "+ p.getProductId()).append(", ")
+                    errorMsg.append(p.getProductId()).append(", ")
                             .append(p.getProductDescription()).append(" (Only ")
                             .append(p.getStockQuantity()).append(" available, ")
                             .append(p.getOrderedQuantity()).append(" requested)\n");
@@ -146,7 +144,7 @@ public class CustomerModel {
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Error");
-                alert.setHeaderText("Checkout failed due to insufficient stock for the following products:");
+                alert.setHeaderText(String.valueOf(errorMsg));
                 //alert.setContentText("Checkout failed due to insufficient stock for the following products:\n");
                 alert.showAndWait();
                 //displayLaSearchResult = "Checkout failed due to insufficient stock for the following products:\n" + errorMsg.toString();
@@ -200,9 +198,12 @@ public class CustomerModel {
     }
 
     void updateView() {
+        // Four UI elements to be passed to CustomerView for display updates.
+        // Image to show in product preview (Search Page)
+        String imageName = "imageHolder.jpg";
         if(theProduct != null){
             imageName = theProduct.getProductImageName();
-            String relativeImageUrl = StorageLocation.imageFolder +imageName; //relative file path, eg images/0001.jpg
+            String relativeImageUrl = StorageLocation.imageFolder + imageName; //relative file path, eg images/0001.jpg
             // Get the full absolute path to the image
             Path imageFullPath = Paths.get(relativeImageUrl).toAbsolutePath();
             imageName = imageFullPath.toUri().toString(); //get the image full Uri then convert to String
