@@ -28,6 +28,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.scene.input.MouseEvent;
+
 /**
  * Some emojis used in the UI. If the emoji does not work on your OS,
  * please change them to their unique Unicode codes.
@@ -76,13 +77,13 @@ public class WarehouseView  {
 
     //some elements in searchPage
     TextField tfSearchKeyword; //user typing in it
-    private Label laSearchSummary; //eg. the lable shows "3 products found" after search
+    private Label laSearchSummary; //eg. the label shows "3 products found" after search
     private ObservableList<Product> obeProductList; //observable product list
     ListView<Product> obrLvProducts; //A ListView observes the product list
 
     //ProductFormPage:has two children at a time,
     ComboBox<String> cbProductFormMode; //the first child
-    private VBox vbEditProduct; //the seceond child
+    private VBox vbEditProduct; //the second child
     private VBox vbNewProduct; //another second child
     String theProFormMode ="EDIT";
     /** productFormPage has two children at a time,
@@ -91,7 +92,7 @@ public class WarehouseView  {
      *    - "NEW": For adding a new product to stock
      * The action mode (either "EDIT" or "NEW") is stored in the 'theProFormMode' variable to keep track of the current mode.
      *
-     * The following two second childeren swap based on the selected value of the ComboBox:
+     * The following two second children swap based on the selected value of the ComboBox:
      * 2. vbEditProduct: contains the UI elements for editing an existing product (visible when "EDIT" is selected)
      * 2. vbNewProduct: contains the UI elements for adding a new product to stock (visible when "NEW" is selected)
      */
@@ -127,7 +128,7 @@ public class WarehouseView  {
     TextField tfStockNewPro;
     TextArea taDescriptionNewPro;
     private ImageView ivProNewPro;
-    String imageUriNewPro; //user slected image Uri
+    String imageUriNewPro; //user selected image Uri
     // URI of the image selected by the user for a new product. This value is retrieved from the image chooser.
 
     public void start(Stage window) {
@@ -470,7 +471,7 @@ public class WarehouseView  {
         Button btn= (Button)event.getSource();
         String action = btn.getText();
 
-        //only when user click btnEidt and a product was selected, enable editable field of editChild
+        //only when user click btnEdit and a product was selected, enable editable field of editChild
         if(action.equals("Edit") && obrLvProducts.getSelectionModel().getSelectedItem()!=null) {
             disableEditProductChild(false); //a product was selected, enable editChild
             cbProductFormMode.setValue("Edit Existing Product in Stock"); //show EditChild
@@ -488,7 +489,7 @@ public class WarehouseView  {
     private void imageChooser(MouseEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg"));
-        File file = fileChooser.showOpenDialog(null); //return absolute fullpath of the user selected file
+        File file = fileChooser.showOpenDialog(null); //return absolute path of the user selected file
                                                               //eg C:/Users/John/Pictures/sample.jpg
         if (file != null) {
 
@@ -512,7 +513,7 @@ public class WarehouseView  {
         }
     }
 
-    //update the product listVew of serachPage
+    //update the product listVew of searchPage
     void updateObservableProductList( ArrayList<Product> productList) {
         int proCounter = productList.size();
         System.out.println(proCounter);
@@ -559,7 +560,7 @@ public class WarehouseView  {
        tfStockNewPro.setText("");
        taDescriptionNewPro.setText("");
        ivProNewPro.setImage(new Image("WarehouseImageHolder.jpg"));
-       imageUriNewPro = null; //clear the selcted image
+       imageUriNewPro = null; //clear the selected image
        System.out.println("resetNewProChild in view called");
     }
 
@@ -581,7 +582,7 @@ public class WarehouseView  {
 //            vbEditProChild = editStockChild(); // Recreate the child
 //            vbManagePage.getChildren().add(vbEditProChild);
 //            proListView.requestFocus();
-//            imageSelectedEdit = false;//reset to false if the user canged image in previous editing
+//            imageSelectedEdit = false;//reset to false if the user changed image in previous editing
 //        }
 //        if (theManageType.equals("addNew")) {
 //            vbAddProChild = addNewProductToStockChild();  // Recreate the child
