@@ -57,6 +57,17 @@ public class CustomerModel {
                 displayLaSearchResult = baseInfo + quantityInfo;
                 System.out.println(displayLaSearchResult);
             }
+            else if(theProduct != null && theProduct.getStockQuantity() == 0)
+            {
+                double unitPrice = theProduct.getUnitPrice();
+                String description = theProduct.getProductDescription();
+                int stock = theProduct.getStockQuantity();
+
+                String baseInfo = String.format("Product_Id: %s\n%s,\nPrice: £%.2f", productId, description, unitPrice);
+                String quantityInfo = "\nOUT OF STOCK";
+                displayLaSearchResult = baseInfo + quantityInfo;
+                System.out.println(displayLaSearchResult);
+            }
             else{
                 theProduct=null;
                 displayLaSearchResult = "No Product was found with ID " + productId;
@@ -161,6 +172,7 @@ public class CustomerModel {
             displayTaTrolley = "Your trolley is empty";
             System.out.println("Your trolley is empty");
         }
+        search();
         updateView();
     }
 
