@@ -21,6 +21,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 /**
  * <p>{@code OrderHub} serves as the heart of the ordering system.
@@ -42,6 +45,8 @@ import java.util.stream.Stream;
 
 public class OrderHub  {
     private static OrderHub orderHub; //singleton instance
+
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     private final Path orderedPath = StorageLocation.orderedPath;
     private final Path progressingPath = StorageLocation.progressingPath;
@@ -85,8 +90,8 @@ public class OrderHub  {
 
         //write order details to file for the orderId in orderedPath (ie. orders/ordered)
         String orderDetail = theOrder.orderDetails();
-        Path path = orderedPath;
-        OrderFileManager.createOrderFile(path, orderId, orderDetail);
+        //Path path = orderedPath;
+        OrderFileManager.createOrderFile(orderedPath, orderId, orderDetail);
 
         orderMap.put(orderId, theOrder.getState()); //add the order to orderMap,state is Ordered initially
         notifyOrderTrackers(); //notify OrderTrackers

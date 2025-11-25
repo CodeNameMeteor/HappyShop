@@ -29,7 +29,7 @@ public class CustomerModel {
                                   //Benefits: Flexibility: Easily change the database implementation.
 
     private Product theProduct =null; // product found from search
-    private ArrayList<Product> trolley =  new ArrayList<>(); // a list of products in trolley
+    private final ArrayList<Product> trolley =  new ArrayList<>(); // a list of products in trolley
 
     private String displayLaSearchResult = "No Product was searched yet"; // Label showing search result message (Search Page)
     private String displayTaTrolley = "";                                // Text area content showing current trolley items (Trolley Page)
@@ -200,7 +200,7 @@ public class CustomerModel {
     void updateView() {
         // Four UI elements to be passed to CustomerView for display updates.
         // Image to show in product preview (Search Page)
-        String imageName = "imageHolder.jpg";
+        String imageName;
         if(theProduct != null){
             imageName = theProduct.getProductImageName();
             String relativeImageUrl = StorageLocation.imageFolder + imageName; //relative file path, eg images/0001.jpg
@@ -219,7 +219,7 @@ public class CustomerModel {
      //File.toURI(): Converts a File object (a file on the filesystem) to a URI object
 
     //for test only
-    public ArrayList<Product> getTrolley() {
-        return trolley;
-    }
+//    public ArrayList<Product> getTrolley() {
+//        return trolley;
+//    }
 }
