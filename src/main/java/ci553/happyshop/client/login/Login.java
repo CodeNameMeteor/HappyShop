@@ -19,11 +19,11 @@ import javafx.stage.Stage;
  * It is a singleton with static access, instantiation is restricted.
  */
 public class Login {
-    private final int WIDTH = UIStyle.EmergencyExitWinWidth;
-    private final int HEIGHT = UIStyle.EmergencyExitWinHeight;
     private static Login login;
     TextField tfUserName; //for user input on the search page. Made accessible so it can be accessed or modified by CustomerModel
     TextField tfPassword;
+    customerAccounts Accounts = new customerAccounts();
+    Account account;
     VBox mainLayout;
     //used by Main class to get the single instance
     public static Login getLogin() {
@@ -35,6 +35,7 @@ public class Login {
     //Private constructor creates a shutdown window.
     //The window displays a single button with a shutdown image,positioned via `WinPosManager`,
     private Login() {
+        Accounts.addCustomerAccount("dylan","dylanpsilby@gmail.com","silby",2);
         // --- Image Setup ---
         //ImageView ivLogin = new ImageView("ShutDown.jpg");
         //ivLogin.setFitWidth(WIDTH - 100);
@@ -71,6 +72,10 @@ public class Login {
         Button btnLogin = new Button("Login"); // Added text so button is visible
         btnLogin.setOnAction(event -> {
             System.out.println("Login Clicked: " + tfUserName.getText());
+            if(Accounts.login(tfUserName.getText(),tfPassword.getText()))
+            {
+                System.out.println("Logged into account: " + tfUserName.getText());
+            }
         });
 
         // --- Main Layout (VBox) ---
@@ -87,6 +92,8 @@ public class Login {
         // Use your existing style
         // borderPane.setStyle(UIStyle.rootStyle);
 
+        int WIDTH = UIStyle.EmergencyExitWinWidth;
+        int HEIGHT = UIStyle.EmergencyExitWinHeight;
         Scene scene = new Scene(borderPane, WIDTH, HEIGHT);
         Stage window = new Stage();
         window.setScene(scene);

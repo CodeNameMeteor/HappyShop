@@ -4,15 +4,19 @@ public class customerAccounts {
     Account account;
     ArrayList<Account> accounts = new ArrayList<Account>();
 
-    public Account createCustomerAccount(String username, String password, String emailAddress, int acctype)
+    public customerAccounts()
+    {}
+
+
+    public Account createCustomerAccount(String username, String password, String emailAddress, int accType)
     {
-        return new Account(username,password,emailAddress,acctype);
+        return new Account(username,password,emailAddress,accType);
     }
 
     public boolean login(String AccName, String AccPassword)
     {
         for (Account Account : accounts){
-            if(account.checkAccountLogin(AccName,AccPassword))
+            if(Account.checkAccountLogin(AccName,AccPassword))
             {
                 account = Account;
                 return true;
@@ -35,5 +39,11 @@ public class customerAccounts {
     public void addAccount(Account a)
     {
         accounts.add(a);
+    }
+
+    public void addCustomerAccount(String pUserName, String pPassword, String pEmail, int pAcctype)
+    {
+        addAccount(createCustomerAccount(pUserName,pPassword,pEmail,pAcctype));
+
     }
 }
