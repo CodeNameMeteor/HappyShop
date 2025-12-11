@@ -3,6 +3,7 @@ package ci553.happyshop.client;
 import ci553.happyshop.client.customer.*;
 
 import ci553.happyshop.client.emergency.EmergencyExit;
+import ci553.happyshop.client.login.Login;
 import ci553.happyshop.client.orderTracker.OrderTracker;
 import ci553.happyshop.client.picker.PickerController;
 import ci553.happyshop.client.picker.PickerModel;
@@ -42,9 +43,9 @@ public class Main extends Application {
     //starts the system
     @Override
     public void start(Stage window) throws IOException {
-        startCustomerClient();
-        startPickerClient();
-        startOrderTracker();
+        //startCustomerClient();
+        //startPickerClient();
+        //startOrderTracker();
 
         //startCustomerClient();
         //startPickerClient();
@@ -52,12 +53,13 @@ public class Main extends Application {
 
         // Initializes the order map for the OrderHub. This must be called after starting the observer clients
         // (such as OrderTracker and Picker clients) to ensure they are properly registered for receiving updates.
-        initializeOrderMap();
+        //initializeOrderMap();
 
-        startWarehouseClient();
+        //startWarehouseClient();
         //startWarehouseClient();
 
-        startEmergencyExit();
+        //startEmergencyExit();
+        startLogin();
     }
 
     /** The customer GUI -search prodduct, add to trolley, cancel/submit trolley, view receipt
@@ -156,6 +158,9 @@ public class Main extends Application {
     private void startEmergencyExit(){
         EmergencyExit.getEmergencyExit();
     }
+
+    private void startLogin() {
+        Login.getLogin();}
 }
 
 
