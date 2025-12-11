@@ -4,6 +4,7 @@ import ci553.happyshop.client.customer.*;
 
 import ci553.happyshop.client.emergency.EmergencyExit;
 import ci553.happyshop.client.login.Login;
+import ci553.happyshop.client.login.customerAccounts;
 import ci553.happyshop.client.orderTracker.OrderTracker;
 import ci553.happyshop.client.picker.PickerController;
 import ci553.happyshop.client.picker.PickerModel;
@@ -37,12 +38,14 @@ import java.io.IOException;
 public class Main extends Application {
 
     public static void main(String[] args) {
-        launch(args); // Launches the JavaFX application and calls the @Override start()
+        launch(args); // Launches the JavaFX application and calls the @Override start();
     }
 
     //starts the system
     @Override
     public void start(Stage window) throws IOException {
+        customerAccounts Accounts = new customerAccounts();
+        Accounts.addCustomerAccount("dylan","dylanpsilby@gmail.com","silby",2);
         //startCustomerClient();
         //startPickerClient();
         //startOrderTracker();
@@ -59,7 +62,7 @@ public class Main extends Application {
         //startWarehouseClient();
 
         //startEmergencyExit();
-        startLogin();
+        startLogin(Accounts);
     }
 
     /** The customer GUI -search prodduct, add to trolley, cancel/submit trolley, view receipt
@@ -159,8 +162,8 @@ public class Main extends Application {
         EmergencyExit.getEmergencyExit();
     }
 
-    private void startLogin() {
-        Login.getLogin();}
+    private void startLogin(customerAccounts Accounts) {
+        Login.getLogin(Accounts);}
 }
 
 

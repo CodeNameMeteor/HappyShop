@@ -22,20 +22,17 @@ public class Login {
     private static Login login;
     TextField tfUserName; //for user input on the search page. Made accessible so it can be accessed or modified by CustomerModel
     TextField tfPassword;
-    customerAccounts Accounts = new customerAccounts();
-    Account account;
     VBox mainLayout;
     //used by Main class to get the single instance
-    public static Login getLogin() {
+    public static Login getLogin(customerAccounts Accounts) {
         if (login == null)
-            login = new Login();
+            login = new Login(Accounts);
         return login;
     }
 
     //Private constructor creates a shutdown window.
     //The window displays a single button with a shutdown image,positioned via `WinPosManager`,
-    private Login() {
-        Accounts.addCustomerAccount("dylan","dylanpsilby@gmail.com","silby",2);
+    private Login(customerAccounts Accounts) {
         // --- Image Setup ---
         //ImageView ivLogin = new ImageView("ShutDown.jpg");
         //ivLogin.setFitWidth(WIDTH - 100);

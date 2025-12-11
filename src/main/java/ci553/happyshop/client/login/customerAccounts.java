@@ -1,7 +1,7 @@
 package ci553.happyshop.client.login;
 import java.util.ArrayList;
 public class customerAccounts {
-    Account account;
+    Account account = null;
     ArrayList<Account> accounts = new ArrayList<Account>();
 
     public customerAccounts()
@@ -27,7 +27,7 @@ public class customerAccounts {
     }
     public boolean loggedIn()
     {
-        return account == null;
+        return account != null;
     }
     public void logOut()
     {
@@ -45,5 +45,13 @@ public class customerAccounts {
     {
         addAccount(createCustomerAccount(pUserName,pPassword,pEmail,pAcctype));
 
+    }
+
+    public int getAcctype()
+    {
+        if(loggedIn()) {
+            return account.accountType;
+        }
+        return 5;
     }
 }
