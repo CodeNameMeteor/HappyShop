@@ -28,10 +28,10 @@ public class Login {
     //Private constructor creates a shutdown window.
     //The window displays a single button with a shutdown image,positioned via `WinPosManager`,
     private Login() {
-        ImageView ivExit = new ImageView("ShutDown.jpg");
-        ivExit.setFitWidth(WIDTH-100);
-        ivExit.setFitHeight(WIDTH-100);
-        ivExit.setPreserveRatio(true);
+        ImageView ivLogin = new ImageView("ShutDown.jpg");
+        ivLogin.setFitWidth(WIDTH-100);
+        ivLogin.setFitHeight(WIDTH-100);
+        ivLogin.setPreserveRatio(true);
 
         Button btnLogin = new Button();
         //btnExit.setGraphic(ivExit);
