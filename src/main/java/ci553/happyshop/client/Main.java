@@ -68,10 +68,12 @@ public class Main extends Application {
             case 0: // Customer
                 startCustomerClient();
                 startOrderTracker(); // Optional: Customers usually want to track orders
+                startEmergencyExit();
                 break;
 
             case 1: // Picker
                 startPickerClient();
+                startEmergencyExit();
                 break;
 
             case 2: // Admin - Opens Everything
