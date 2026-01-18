@@ -28,8 +28,8 @@
 }
 
 .input-field:focused {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #764ba2
+    /*-fx-background-color: #ffffff;*/
+    -fx-border-color: #764ba2;
     -fx-border-radius: 5;
 }
 
@@ -63,3 +63,4 @@
     -fx-text-fill: #ff4757;
     -fx-font-size: 12px;
 }
+
