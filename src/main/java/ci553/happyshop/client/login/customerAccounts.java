@@ -1,57 +1,74 @@
 package ci553.happyshop.client.login;
+
+import java.io.*;
 import java.util.ArrayList;
+
 public class customerAccounts {
-    Account account = null;
-    ArrayList<Account> accounts = new ArrayList<Account>();
+    private Account currentAccount = null;
+    private ArrayList<Account> accounts = new ArrayList<>();
+    private final String FILE_NAME = "users.txt";
 
-    public customerAccounts()
-    {}
+    public customerAccounts() {
+        loadAccounts();
 
-
-    public Account createCustomerAccount(String username, String password, String emailAddress, int accType)
-    {
-        return new Account(username,password,emailAddress,accType);
+        // If file is empty/missing, add default admin for testing
+        if (accounts.isEmpty()) {
+            System.out.println("No accounts found. Creating default admin.");
+            addCustomerAccount("admin", "admin123", "admin@shop.com", 2);
+            addCustomerAccount("dylan", "silby", "dylanpsilby@gmail.com", 0);
+        }
     }
 
-    public boolean login(String AccName, String AccPassword)
-    {
-        for (Account Account : accounts){
-            if(Account.checkAccountLogin(AccName,AccPassword))
-            {
-                account = Account;
+    public boolean login(String inputName, String inputPassword) {
+        for (Account acc : accounts) {
+            if (acc.checkAccountLogin(inputName, inputPassword)) {
+                currentAccount = acc;
                 return true;
             }
         }
-        account = null;
+        currentAccount = null;
         return false;
     }
-    public boolean loggedIn()
-    {
-        return account != null;
+
+    public void addCustomerAccount(String name, String pass, String email, int type) {
+        // Create new account (false = password is NOT yet hashed)
+        Account newAcc = new Account(name, email, pass, type, false);
+        accounts.add(newAcc);
+        saveAccounts(); // Save immediately to file
     }
-    public void logOut()
-    {
-        if(loggedIn())
-        {
-            account = null;
+
+    public int getCurrentAccountType() {
+        return (currentAccount != null) ? currentAccount.accountType : -1;
+    }
+
+    // --- File I/O ---
+
+    private void saveAccounts() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            for (Account acc : accounts) {
+                writer.write(acc.toFileString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-    public void addAccount(Account a)
-    {
-        accounts.add(a);
-    }
 
-    public void addCustomerAccount(String pUserName, String pPassword, String pEmail, int pAcctype)
-    {
-        addAccount(createCustomerAccount(pUserName,pPassword,pEmail,pAcctype));
+    private void loadAccounts() {
+        File file = new File(FILE_NAME);
+        if (!file.exists()) return;
 
-    }
-
-    public int getAcctype()
-    {
-        if(loggedIn()) {
-            return account.accountType;
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 4) {
+                    // Load account (true = password IS already hashed in file)
+                    accounts.add(new Account(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]), true));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return 5;
     }
 }
