@@ -1,6 +1,7 @@
 
 .root {
-    -fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2);
+    /*-fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2);*/
+    -fx-background-color: #a2bffe;
     -fx-font-family: 'Segoe UI', sans-serif;
 }
 
@@ -29,12 +30,12 @@
 
 .input-field:focused {
     /*-fx-background-color: #ffffff;*/
-    -fx-border-color: #764ba2;
+    -fx-border-color: #a2bffe;
     -fx-border-radius: 5;
 }
 
 .primary-btn {
-    -fx-background-color: #764ba2;
+    -fx-background-color: #a2bffe;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
@@ -44,7 +45,7 @@
 }
 
 .primary-btn:hover {
-    -fx-background-color: #5b3a7d; /* Darker purple on hover */
+    -fx-background-color: #3D426B; /* Darker purple on hover */
 }
 
 .link-btn {
