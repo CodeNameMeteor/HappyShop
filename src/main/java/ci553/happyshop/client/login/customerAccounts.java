@@ -41,7 +41,19 @@ public class customerAccounts {
         return (currentAccount != null) ? currentAccount.accountType : -1;
     }
 
-    // --- File I/O ---
+    public boolean checkNewCustomerDetails(String name, String pass, String email)
+    {
+        if(!email.contains("@"))
+        {
+            return false;
+        }
+        else if(pass.length() < 5)
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     private void saveAccounts() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {

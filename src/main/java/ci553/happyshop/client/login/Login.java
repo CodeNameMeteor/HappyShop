@@ -114,7 +114,11 @@ public class Login {
         btnConfirm.setOnAction(e -> {
             if (regUser.getText().isEmpty() || regPass.getText().isEmpty()) {
                 regStatus.setText("Fields cannot be empty");
-            } else {
+            } else if(!accounts.checkNewCustomerDetails(regUser.getText(), regPass.getText(), regEmail.getText()))
+            {
+                regStatus.setText("Fields don't meet requirements");
+            }
+            else {
                 accounts.addCustomerAccount(regUser.getText(), regPass.getText(), regEmail.getText(), 0);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
