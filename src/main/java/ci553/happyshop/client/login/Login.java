@@ -2,102 +2,72 @@ package ci553.happyshop.client.login;
 
 import ci553.happyshop.utility.UIStyle;
 import ci553.happyshop.utility.WinPosManager;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/**
- * The class EmergencyExit used to immediately shut down the entire application.
- * It is a singleton with static access, instantiation is restricted.
- */
 public class Login {
-    private static Login login;
-    TextField tfUserName; //for user input on the search page. Made accessible so it can be accessed or modified by CustomerModel
-    TextField tfPassword;
-    VBox mainLayout;
-    //used by Main class to get the single instance
-    public static Login getLogin(customerAccounts Accounts) {
-        if (login == null)
-            login = new Login(Accounts);
-        return login;
+
+    // Functional interface to send data back to Main
+    public interface LoginListener {
+        void onLoginSuccess(int accountType);
     }
 
-    //Private constructor creates a shutdown window.
-    //The window displays a single button with a shutdown image,positioned via `WinPosManager`,
-    private Login(customerAccounts Accounts) {
-        // --- Image Setup ---
-        //ImageView ivLogin = new ImageView("ShutDown.jpg");
-        //ivLogin.setFitWidth(WIDTH - 100);
-        //ivLogin.setFitHeight(WIDTH - 100); // Assuming you want square aspect based on width
-        //ivLogin.setPreserveRatio(true);
+    private static Login loginInstance;
+    private Stage window;
 
-        // --- Username Row (HBox) ---
-        Label laUserName = new Label("Username:");
-        // laUserName.setStyle(UIStyle.labelStyle); // Uncomment if style exists
+    // Modified to accept the Listener
+    public static void showLogin(customerAccounts accounts, LoginListener listener) {
+        if (loginInstance == null) {
+            loginInstance = new Login(accounts, listener);
+        } else {
+            loginInstance.window.show();
+        }
+    }
 
-        tfUserName = new TextField();
-        tfUserName.setPromptText("Enter Your Username");
-        tfUserName.setStyle(UIStyle.textFiledStyle);
+    private Login(customerAccounts accounts, LoginListener listener) {
+        TextField tfUserName = new TextField();
+        tfUserName.setPromptText("Username");
 
-        // Create HBox for Username
-        HBox hbName = new HBox(10); // 10 is the spacing between Label and TextField
-        hbName.setAlignment(Pos.CENTER); // Center items within the HBox
-        hbName.getChildren().addAll(laUserName, tfUserName);
+        PasswordField pfPassword = new PasswordField(); // Use PasswordField!
+        pfPassword.setPromptText("Password");
 
-        // --- Password Row (HBox) ---
-        Label laPassword = new Label("Password:");
-        // laPassword.setStyle(UIStyle.labelStyle); // Uncomment if style exists
+        Button btnLogin = new Button("Login");
+        Label statusLabel = new Label("");
+        statusLabel.setStyle("-fx-text-fill: red;");
 
-        tfPassword = new TextField(); // Use PasswordField to hide characters
-        tfPassword.setPromptText("Enter Your Password");
-        tfPassword.setStyle(UIStyle.textFiledStyle);
-
-        // Create HBox for Password
-        HBox hbPassword = new HBox(10);
-        hbPassword.setAlignment(Pos.CENTER);
-        hbPassword.getChildren().addAll(laPassword, tfPassword);
-
-        // --- Login Button ---
-        Button btnLogin = new Button("Login"); // Added text so button is visible
         btnLogin.setOnAction(event -> {
-            System.out.println("Login Clicked: " + tfUserName.getText());
-            if(Accounts.login(tfUserName.getText(),tfPassword.getText()))
-            {
-                System.out.println("Logged into account: " + tfUserName.getText());
+            boolean success = accounts.login(tfUserName.getText(), pfPassword.getText());
+
+            if (success) {
+                statusLabel.setText("Login Successful!");
+                int type = accounts.getCurrentAccountType();
+                window.close(); // Close login window
+                listener.onLoginSuccess(type); // Trigger Main to open apps
+            } else {
+                statusLabel.setText("Invalid credentials.");
             }
         });
 
-        // --- Main Layout (VBox) ---
-        // VBox holds the Image, Name Row, Password Row, and Button vertically
-        VBox mainLayout = new VBox(20); // 20 is vertical spacing between rows
-        mainLayout.setAlignment(Pos.CENTER); // Center everything in the window
-        mainLayout.getChildren().addAll(hbName, hbPassword, btnLogin);
+        // Layout
+        VBox layout = new VBox(15);
+        layout.setAlignment(Pos.CENTER);
+        layout.getChildren().addAll(
+                new Label("HappyShop Login"),
+                tfUserName,
+                pfPassword,
+                btnLogin,
+                statusLabel
+        );
+        layout.setStyle("-fx-padding: 20;");
 
-        // --- Root Pane ---
-        BorderPane borderPane = new BorderPane();
-        // Set the VBox as the center of the BorderPane
-        borderPane.setCenter(mainLayout);
-
-        // Use your existing style
-        // borderPane.setStyle(UIStyle.rootStyle);
-
-        int WIDTH = UIStyle.EmergencyExitWinWidth;
-        int HEIGHT = UIStyle.EmergencyExitWinHeight;
-        Scene scene = new Scene(borderPane, WIDTH, HEIGHT);
-        Stage window = new Stage();
-        window.setScene(scene);
-        window.setTitle("🛒 LOGIN");
-
-        WinPosManager.registerWindow(window, WIDTH, HEIGHT);
+        window = new Stage();
+        window.setScene(new Scene(layout, 300, 250));
+        window.setTitle("Login");
         window.show();
     }
-
 }
