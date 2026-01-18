@@ -1,0 +1,65 @@
+
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2);
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+.card-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 30;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);
+    -fx-max-width: 350;
+}
+
+.header-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-padding: 0 0 20 0;
+}
+
+.input-field {
+    -fx-background-color: #f1f2f6;
+    -fx-background-radius: 5;
+    -fx-border-color: transparent;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+}
+
+.input-field:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #764ba2
+    -fx-border-radius: 5;
+}
+
+.primary-btn {
+    -fx-background-color: #764ba2;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.primary-btn:hover {
+    -fx-background-color: #5b3a7d; /* Darker purple on hover */
+}
+
+.link-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #667eea;
+    -fx-underline: false;
+    -fx-cursor: hand;
+    -fx-font-size: 12px;
+}
+
+.link-btn:hover {
+    -fx-underline: true;
+}
+
+.error-label {
+    -fx-text-fill: #ff4757;
+    -fx-font-size: 12px;
+}
