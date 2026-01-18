@@ -3,24 +3,34 @@ package ci553.happyshop.client.login;
 public class Account {
     private String username;
     private String email;
-    private String password; //hashing used in the future
-    private int accountType = 0; //0 is customer, 1 is picker, 2 is admin
-    private boolean isAdmin = false;
+    private String passwordHash;
+    public int accountType; // 0=Customer, 1=Picker, 2=Admin
 
-    public Account(String pUsername, String pEmail, String pPassword, int pAccType)
-    {
+    //  accepts a raw password and hashes it immediately
+    public Account(String pUsername, String pEmail, String pRawPassword, int pAccType, boolean isAlreadyHashed) {
         this.username = pUsername;
         this.email = pEmail;
-        this.password = pPassword;
         this.accountType = pAccType;
+
+        if (isAlreadyHashed) {
+            this.passwordHash = pRawPassword;
+        } else {
+            this.passwordHash = PasswordUtils.hashPassword(pRawPassword);
+        }
     }
-    public boolean checkAccountLogin(String InputtedUserName, String InputtedPassword)
-    {
-        if(this.username.equals(InputtedUserName) || this.email.equals(InputtedUserName))
-        {
-            return this.password.equals(InputtedPassword);
+
+    public boolean checkAccountLogin(String inputName, String inputPassword) {
+        if (this.username.equals(inputName) || this.email.equals(inputName)) {
+            // compare input hash to stored hash
+            return PasswordUtils.checkPassword(inputPassword, this.passwordHash);
         }
         return false;
     }
 
+    // format data
+    public String toFileString() {
+        return username + "," + email + "," + passwordHash + "," + accountType;
+    }
+
+    public String getUsername() { return username; }
 }
