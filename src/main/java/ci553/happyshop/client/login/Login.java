@@ -37,9 +37,12 @@ public class Login {
         pfPassword.setPromptText("Password");
 
         Button btnLogin = new Button("Login");
+        Button btnCreate = new Button("Create Account");
         Label statusLabel = new Label("");
         statusLabel.setStyle("-fx-text-fill: red;");
-
+        btnCreate.setOnAction(event -> {
+            //create logic goes here
+        });
         btnLogin.setOnAction(event -> {
             boolean success = accounts.login(tfUserName.getText(), pfPassword.getText());
 
@@ -61,6 +64,7 @@ public class Login {
                 tfUserName,
                 pfPassword,
                 btnLogin,
+                btnCreate,
                 statusLabel
         );
         layout.setStyle("-fx-padding: 20;");
