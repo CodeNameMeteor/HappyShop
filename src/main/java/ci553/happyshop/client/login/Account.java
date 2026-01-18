@@ -1,9 +1,9 @@
 package ci553.happyshop.client.login;
 
 public class Account {
-    private String username;
-    private String email;
-    private String passwordHash;
+    private final String username;
+    private final String email;
+    private final String passwordHash;
     public int accountType; // 0=Customer, 1=Picker, 2=Admin
 
     //  accepts a raw password and hashes it immediately
@@ -32,5 +32,5 @@ public class Account {
         return username + "," + email + "," + passwordHash + "," + accountType;
     }
 
-    public String getUsername() { return username; }
+    //public String getUsername() { return username; }
 }
