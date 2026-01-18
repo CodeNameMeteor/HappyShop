@@ -44,27 +44,48 @@ public class Main extends Application {
     //starts the system
     @Override
     public void start(Stage window) throws IOException {
-        customerAccounts Accounts = new customerAccounts();
-        Accounts.addCustomerAccount("dylan","dylanpsilby@gmail.com","silby",2);
-        //startCustomerClient();
-        //startPickerClient();
-        //startOrderTracker();
+        // 1. Initialize Account System
+        customerAccounts accounts = new customerAccounts();
 
-        //startCustomerClient();
-        //startPickerClient();
-        //startOrderTracker();
+        // 2. Start Login and provide the logic for what happens NEXT
+        Login.showLogin(accounts, (accountType) -> {
 
-        // Initializes the order map for the OrderHub. This must be called after starting the observer clients
-        // (such as OrderTracker and Picker clients) to ensure they are properly registered for receiving updates.
-        //initializeOrderMap();
-
-        //startWarehouseClient();
-        //startWarehouseClient();
-
-        //startEmergencyExit();
-        startLogin(Accounts);
+            // This code runs ONLY after successful login
+            try {
+                launchUserInterface(accountType);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
+    // New helper to switch based on account type
+    private void launchUserInterface(int type) {
+        System.out.println("Launching interface for Account Type: " + type);
+
+        // 0 = Customer, 1 = Picker, 2 = Admin
+        switch (type) {
+            case 0: // Customer
+                startCustomerClient();
+                startOrderTracker(); // Optional: Customers usually want to track orders
+                break;
+
+            case 1: // Picker
+                startPickerClient();
+                break;
+
+            case 2: // Admin - Opens Everything
+                startCustomerClient();
+                startPickerClient();
+                startWarehouseClient();
+                startOrderTracker();
+                startEmergencyExit();
+                break;
+
+            default:
+                System.out.println("Unknown account type.");
+        }
+    }
     /** The customer GUI -search prodduct, add to trolley, cancel/submit trolley, view receipt
      *
      * Creates the Model, View, and Controller objects, links them together so they can communicate with each other.
@@ -161,9 +182,6 @@ public class Main extends Application {
     private void startEmergencyExit(){
         EmergencyExit.getEmergencyExit();
     }
-
-    private void startLogin(customerAccounts Accounts) {
-        Login.getLogin(Accounts);}
 }
 
 
