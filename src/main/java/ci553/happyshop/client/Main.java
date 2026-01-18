@@ -67,13 +67,15 @@ public class Main extends Application {
         switch (type) {
             case 0: // Customer
                 startCustomerClient();
-                startOrderTracker(); // Optional: Customers usually want to track orders
-                startEmergencyExit();
+                //startOrderTracker();
+                //startEmergencyExit();
+                initializeOrderMap();
                 break;
 
             case 1: // Picker
                 startPickerClient();
                 startEmergencyExit();
+                initializeOrderMap();
                 break;
 
             case 2: // Admin - Opens Everything
@@ -82,13 +84,14 @@ public class Main extends Application {
                 startWarehouseClient();
                 startOrderTracker();
                 startEmergencyExit();
+                initializeOrderMap();
                 break;
 
             default:
                 System.out.println("Unknown account type.");
         }
     }
-    /** The customer GUI -search prodduct, add to trolley, cancel/submit trolley, view receipt
+    /** The customer GUI -search product, add to trolley, cancel/submit trolley, view receipt
      *
      * Creates the Model, View, and Controller objects, links them together so they can communicate with each other.
      * Also creates the DatabaseRW instance via the DatabaseRWFactory and injects it into the CustomerModel.
