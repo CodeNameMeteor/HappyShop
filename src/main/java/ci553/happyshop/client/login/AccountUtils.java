@@ -5,12 +5,12 @@ import java.security.NoSuchAlgorithmException;
 import java.nio.charset.StandardCharsets;
 import java.math.BigInteger;
 
-public class PasswordUtils {
+public class AccountUtils {
 
-    public static String hashPassword(String password) {
+    public static String hashString(String data) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
+            byte[] hash = md.digest(data.getBytes(StandardCharsets.UTF_8));
             BigInteger number = new BigInteger(1, hash);
             StringBuilder hexString = new StringBuilder(number.toString(16));
             while (hexString.length() < 32) {
@@ -22,8 +22,8 @@ public class PasswordUtils {
         }
     }
 
-    public static boolean checkPassword(String inputPassword, String storedHash) {
-        String inputHash = hashPassword(inputPassword);
+    public static boolean checkHash(String inputPassword, String storedHash) {
+        String inputHash = hashString(inputPassword);
         return inputHash.equals(storedHash);
     }
 }

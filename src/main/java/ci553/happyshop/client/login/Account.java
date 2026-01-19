@@ -2,28 +2,29 @@ package ci553.happyshop.client.login;
 
 // 1. Abstract Base Class
 public abstract class Account {
-    protected String username;
+    protected String usernameHash;
     protected String email;
     protected String passwordHash;
 
     public Account(String username, String email, String pRawPassword, boolean isAlreadyHashed) {
-        this.username = username;
         this.email = email;
         if (isAlreadyHashed) {
             this.passwordHash = pRawPassword;
+            this.usernameHash = username;
         } else {
-            this.passwordHash = PasswordUtils.hashPassword(pRawPassword);
+            this.passwordHash = AccountUtils.hashString(pRawPassword);
+            this.usernameHash = AccountUtils.hashString(username);
         }
     }
 
     public boolean checkLogin(String inputUser, String inputPassword) {
-        return this.username.equals(inputUser) && PasswordUtils.checkPassword(inputPassword, this.passwordHash);
+        return AccountUtils.checkHash(inputUser, this.usernameHash ) && AccountUtils.checkHash(inputPassword, this.passwordHash);
     }
 
     public abstract String getAccountType();
 
     public String toFileString() {
-        return username + "," + email + "," + passwordHash + "," + getAccountType();
+        return usernameHash + "," + email + "," + passwordHash + "," + getAccountType();
     }
 
 }
