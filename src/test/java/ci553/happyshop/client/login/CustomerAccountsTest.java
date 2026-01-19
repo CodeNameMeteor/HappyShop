@@ -45,6 +45,7 @@ class CustomerAccountsTest {
     }
     @Test
     void testAddNewAccount() {
+        //test if we can create a new account and successfully log in.
         Account test = new CustomerAccount("newguy", "new@test.com", "pass123", false);
 
         customerAccounts.addAccount(test);
@@ -52,7 +53,15 @@ class CustomerAccountsTest {
         assertTrue(customerAccounts.login("newguy", "pass123"));
     }
     @Test
+    void testPasswordRequirements(){
+        //test if the password requirements work correctly
+        assertTrue(customerAccounts.checkNewCustomerDetails("yahhh", "goodpassword", "Yah@gmail.com"));
+        assertFalse(customerAccounts.checkNewCustomerDetails("wooooo", "bad", "good@gmail.com"));
+        assertFalse(customerAccounts.checkNewCustomerDetails("wooowoo", "goodpassword", "badmail"));
+    }
+    @Test
     void testNewAccountWithAnExistingPassword() {
+        //test if we can make an account with an existing password
         Account test = new CustomerAccount("tester", "testingtester@test.com", "admin123", false);
 
         customerAccounts.addAccount(test);
@@ -61,20 +70,16 @@ class CustomerAccountsTest {
     }
     @Test
     void testLoginFailure() {
+        //test failed login
         assertFalse(customerAccounts.login("admin", "wrongpassword"));
         assertFalse(customerAccounts.login("mwuahahah", "admin123"));
         assertEquals("NONE", customerAccounts.getCurrentAccountType());
     }
 
-    @Test
-    void testValidation() {
-        assertTrue(customerAccounts.checkNewCustomerDetails("user", "12345", "a@b.com"));
-        assertFalse(customerAccounts.checkNewCustomerDetails("user", "12345", "ab.com"));
-        assertFalse(customerAccounts.checkNewCustomerDetails("user", "1234", "a@b.com"));
-    }
 
     @Test
     void testPersistence() {
+        //test if logins are persistent across multiple sessions.
         Account savedUser = new CustomerAccount("persistUser", "p@test.com", "saveMe", false);
         customerAccounts.addAccount(savedUser);
 
