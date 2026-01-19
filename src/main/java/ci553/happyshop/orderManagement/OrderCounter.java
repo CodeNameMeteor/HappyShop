@@ -4,10 +4,10 @@ import ci553.happyshop.utility.StorageLocation;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 /**
  * OrderCounter is responsible for generating unique, sequential orderIDs for new orders.

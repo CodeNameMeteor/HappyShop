@@ -5,6 +5,7 @@ import ci553.happyshop.catalogue.Product;
 import ci553.happyshop.orderManagement.OrderHub;
 import ci553.happyshop.storageAccess.DatabaseRW;
 import ci553.happyshop.utility.ProductListFormatter;
+import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -12,8 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import javafx.scene.control.Alert;
 
 public class CustomerModel {
     public CustomerView cusView;

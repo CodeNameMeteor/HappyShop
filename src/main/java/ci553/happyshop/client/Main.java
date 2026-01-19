@@ -1,7 +1,8 @@
 package ci553.happyshop.client;
 
-import ci553.happyshop.client.customer.*;
-
+import ci553.happyshop.client.customer.CustomerController;
+import ci553.happyshop.client.customer.CustomerModel;
+import ci553.happyshop.client.customer.CustomerView;
 import ci553.happyshop.client.emergency.EmergencyExit;
 import ci553.happyshop.client.login.CustomerAccounts;
 import ci553.happyshop.client.login.Login;
@@ -9,13 +10,13 @@ import ci553.happyshop.client.orderTracker.OrderTracker;
 import ci553.happyshop.client.picker.PickerController;
 import ci553.happyshop.client.picker.PickerModel;
 import ci553.happyshop.client.picker.PickerView;
-
 import ci553.happyshop.client.warehouse.*;
 import ci553.happyshop.orderManagement.OrderHub;
 import ci553.happyshop.storageAccess.DatabaseRW;
 import ci553.happyshop.storageAccess.DatabaseRWFactory;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 /**
