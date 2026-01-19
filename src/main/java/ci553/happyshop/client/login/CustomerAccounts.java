@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class CustomerAccounts {
     private Account currentAccount = null;
-    private ArrayList<Account> accounts = new ArrayList<>();
+    private final ArrayList<Account> accounts = new ArrayList<>();
     private final String FILE_NAME = "users.txt";
 
     public CustomerAccounts() {
