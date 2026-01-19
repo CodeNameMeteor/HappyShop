@@ -12,8 +12,8 @@ public class CustomerAccounts {
         loadAccounts();
 
         if (accounts.isEmpty()) {
+            //if there are no accounts create the default accounts for each account types
             System.out.println("No accounts found. Creating default admin.");
-            // Note specific AdminAccount creation
             addAccount(new AdminAccount("admin", "admin@shop.com", "admin123", false));
             addAccount(new CustomerAccount("frank", "frankscott@gmail.com", "scott", false));
             addAccount(new PickerAccount("picker", "picker@pick.com","picker", false));
@@ -21,6 +21,7 @@ public class CustomerAccounts {
     }
 
     public boolean login(String inputName, String inputPassword) {
+        //iterates through the account list and checks the inputted logins to the stored ones.
         for (Account acc : accounts) {
             if (acc.checkLogin(inputName, inputPassword)) {
                 currentAccount = acc;
