@@ -16,6 +16,7 @@ public class CustomerAccounts {
             // Note specific AdminAccount creation
             addAccount(new AdminAccount("admin", "admin@shop.com", "admin123", false));
             addAccount(new CustomerAccount("frank", "frankscott@gmail.com", "scott", false));
+            addAccount(new PickerAccount("picker", "picker@pick.com","picker", false));
         }
     }
 

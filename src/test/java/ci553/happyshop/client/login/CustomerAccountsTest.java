@@ -9,10 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class CustomerAccountsTest {
 
     private CustomerAccounts customerAccounts;
-    private final String TEST_FILE = "test.txt";
+    private final String TEST_FILE = "users.txt";
 
     @BeforeEach
     void setUp() {
+        //delete file before each test is ran.
         File file = new File(TEST_FILE);
         if (file.exists()) {
             file.delete();
@@ -32,13 +33,15 @@ class CustomerAccountsTest {
 
     @Test
     void testDefaultAccountsCreation() {
-        // test if we can log in to the default accounts
+        // test if we can log in to the default admin accounts
         assertTrue(customerAccounts.login("admin", "admin123"));
         //Test if we can get the accounts type.
         assertEquals("ADMIN", customerAccounts.getCurrentAccountType());
-
+        //test if we can log in to the default customer account
         assertTrue(customerAccounts.login("frank", "scott"));
         assertEquals("CUSTOMER", customerAccounts.getCurrentAccountType());
+        assertTrue(customerAccounts.login("picker", "picker"));
+        assertEquals("PICKER", customerAccounts.getCurrentAccountType());
     }
     @Test
     void testAddNewAccount() {
@@ -54,7 +57,7 @@ class CustomerAccountsTest {
 
         customerAccounts.addAccount(test);
 
-        assertTrue(customerAccounts.login("newguy", "pass123"));
+        assertTrue(customerAccounts.login("tester", "admin123"));
     }
     @Test
     void testLoginFailure() {
