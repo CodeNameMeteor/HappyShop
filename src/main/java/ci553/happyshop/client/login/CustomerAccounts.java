@@ -3,7 +3,7 @@ package ci553.happyshop.client.login;
 import java.io.*;
 import java.util.ArrayList;
 
-public class CustomerAccounts { // Renamed to CamelCase convention
+public class CustomerAccounts {
     private Account currentAccount = null;
     private ArrayList<Account> accounts = new ArrayList<>();
     private final String FILE_NAME = "users.txt";

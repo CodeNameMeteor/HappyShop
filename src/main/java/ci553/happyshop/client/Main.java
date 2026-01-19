@@ -44,13 +44,10 @@ public class Main extends Application {
     //starts the system
     @Override
     public void start(Stage window) throws IOException {
-        // 1. Initialize Account System
         CustomerAccounts accounts = new CustomerAccounts();
 
-        // 2. Start Login and provide the logic for what happens NEXT
         Login.showLogin(accounts, (accountType) -> {
 
-            // This code runs ONLY after successful login
             try {
                 launchUserInterface(accountType);
             } catch (Exception e) {
@@ -59,11 +56,9 @@ public class Main extends Application {
         });
     }
 
-    // New helper to switch based on account type
     private void launchUserInterface(String type) {
         System.out.println("Launching interface for Account Type: " + type);
 
-        // 0 = Customer, 1 = Picker, 2 = Admin
         switch (type) {
             case "CUSTOMER": // Customer
                 startCustomerClient();
