@@ -1,0 +1,10 @@
+Order ID: 38 
+State: Collected
+OrderedDateTime: 2025-10-28 11:33:54 
+ProgressingDateTime: 2025-10-28 11:33:56
+CollectedDateTime: 2025-10-28 11:34:00
+Items:
+ 0001    40 inch TV         ( 2) £ 538.00
+--------------------------------------------
+ Total                               £ 538.00
+

@@ -1,0 +1,12 @@
+Order ID: 55 
+State: Ordered 
+OrderedDateTime: 2026-01-19 11:10:00 
+ProgressingDateTime:  
+CollectedDateTime: 
+Items:
+ 0001    40 inch TV         ( 3) £ 807.00
+ 0003    Toaster            ( 2) £  39.98
+ 0004    Watch              ( 2) £  59.98
+--------------------------------------------
+ Total                               £ 906.96
+
