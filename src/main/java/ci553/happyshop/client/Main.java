@@ -3,8 +3,8 @@ package ci553.happyshop.client;
 import ci553.happyshop.client.customer.*;
 
 import ci553.happyshop.client.emergency.EmergencyExit;
+import ci553.happyshop.client.login.CustomerAccounts;
 import ci553.happyshop.client.login.Login;
-import ci553.happyshop.client.login.customerAccounts;
 import ci553.happyshop.client.orderTracker.OrderTracker;
 import ci553.happyshop.client.picker.PickerController;
 import ci553.happyshop.client.picker.PickerModel;
@@ -45,7 +45,7 @@ public class Main extends Application {
     @Override
     public void start(Stage window) throws IOException {
         // 1. Initialize Account System
-        customerAccounts accounts = new customerAccounts();
+        CustomerAccounts accounts = new CustomerAccounts();
 
         // 2. Start Login and provide the logic for what happens NEXT
         Login.showLogin(accounts, (accountType) -> {
@@ -60,25 +60,25 @@ public class Main extends Application {
     }
 
     // New helper to switch based on account type
-    private void launchUserInterface(int type) {
+    private void launchUserInterface(String type) {
         System.out.println("Launching interface for Account Type: " + type);
 
         // 0 = Customer, 1 = Picker, 2 = Admin
         switch (type) {
-            case 0: // Customer
+            case "CUSTOMER": // Customer
                 startCustomerClient();
                 //startOrderTracker();
                 //startEmergencyExit();
                 initializeOrderMap();
                 break;
 
-            case 1: // Picker
+            case "PICKER": // Picker
                 startPickerClient();
                 startEmergencyExit();
                 initializeOrderMap();
                 break;
 
-            case 2: // Admin - Opens Everything
+            case "ADMIN": // Admin - Opens Everything
                 startCustomerClient();
                 startPickerClient();
                 startWarehouseClient();

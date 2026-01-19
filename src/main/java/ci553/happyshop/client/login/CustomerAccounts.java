@@ -3,25 +3,25 @@ package ci553.happyshop.client.login;
 import java.io.*;
 import java.util.ArrayList;
 
-public class customerAccounts {
+public class CustomerAccounts { // Renamed to CamelCase convention
     private Account currentAccount = null;
     private ArrayList<Account> accounts = new ArrayList<>();
     private final String FILE_NAME = "users.txt";
 
-    public customerAccounts() {
+    public CustomerAccounts() {
         loadAccounts();
 
-        // If file is empty/missing, add default admin for testing
         if (accounts.isEmpty()) {
             System.out.println("No accounts found. Creating default admin.");
-            addCustomerAccount("admin", "admin123", "admin@shop.com", 2);
-            addCustomerAccount("dylan", "silby", "dylanpsilby@gmail.com", 0);
+            // Note specific AdminAccount creation
+            addAccount(new AdminAccount("admin", "admin@shop.com", "admin123", false));
+            addAccount(new CustomerAccount("dylan", "dylanpsilby@gmail.com", "silby", false));
         }
     }
 
     public boolean login(String inputName, String inputPassword) {
         for (Account acc : accounts) {
-            if (acc.checkAccountLogin(inputName, inputPassword)) {
+            if (acc.checkLogin(inputName, inputPassword)) {
                 currentAccount = acc;
                 return true;
             }
@@ -30,29 +30,16 @@ public class customerAccounts {
         return false;
     }
 
-    public void addCustomerAccount(String name, String pass, String email, int type) {
-        // Create new account (false = password is NOT yet hashed)
-        Account newAcc = new Account(name, email, pass, type, false);
+    // Generic add method that accepts any child of Account
+    public void addAccount(Account newAcc) {
         accounts.add(newAcc);
-        saveAccounts(); // Save immediately to file
+        saveAccounts();
     }
 
-    public int getCurrentAccountType() {
-        return (currentAccount != null) ? currentAccount.accountType : -1;
-    }
-
-    public boolean checkNewCustomerDetails(String name, String pass, String email)
-    {
-        if(!email.contains("@"))
-        {
-            return false;
-        }
-        else if(pass.length() < 5)
-        {
-            return false;
-        }
-
-        return true;
+    // Helper to return the type as a String or Int based on the instance class
+    public String getCurrentAccountType() {
+        if (currentAccount == null) return "NONE";
+        return currentAccount.getAccountType();
     }
 
     private void saveAccounts() {
@@ -75,12 +62,26 @@ public class customerAccounts {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length == 4) {
-                    // Load account (true = password IS already hashed in file)
-                    accounts.add(new Account(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]), true));
+                    String user = parts[0];
+                    String email = parts[1];
+                    String pass = parts[2];
+                    String type = parts[3];
+
+                    // FACTORY LOGIC: Decide which class to create based on file data
+                    if (type.equals("ADMIN")) {
+                        accounts.add(new AdminAccount(user, email, pass, true));
+                    } else {
+                        accounts.add(new CustomerAccount(user, email, pass, true));
+                    }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // Validation logic remains similar
+    public boolean checkNewCustomerDetails(String name, String pass, String email) {
+        return email.contains("@") && pass.length() >= 5;
     }
 }

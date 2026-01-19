@@ -11,14 +11,14 @@ import javafx.stage.Stage;
 public class Login {
 
     public interface LoginListener {
-        void onLoginSuccess(int accountType);
+        void onLoginSuccess(String accountType);
     }
 
     private static Login loginInstance;
     private Stage window;
-    private customerAccounts accounts;
+    private CustomerAccounts accounts;
 
-    public static void showLogin(customerAccounts accounts, LoginListener listener) {
+    public static void showLogin(CustomerAccounts accounts, LoginListener listener) {
         if (loginInstance == null) {
             loginInstance = new Login(accounts, listener);
         } else {
@@ -26,7 +26,7 @@ public class Login {
         }
     }
 
-    private Login(customerAccounts accounts, LoginListener listener) {
+    private Login(CustomerAccounts accounts, LoginListener listener) {
         this.accounts = accounts;
 
         Label lblHeader = new Label("Welcome Back");
@@ -119,7 +119,13 @@ public class Login {
                 regStatus.setText("Fields don't meet requirements");
             }
             else {
-                accounts.addCustomerAccount(regUser.getText(), regPass.getText(), regEmail.getText(), 0);
+                Account newCustomer = new CustomerAccount(
+                        regUser.getText(),
+                        regEmail.getText(),
+                        regPass.getText(),
+                        false
+                );
+                accounts.addAccount(newCustomer);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText(null);

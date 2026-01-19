@@ -1,36 +1,33 @@
 package ci553.happyshop.client.login;
 
-public class Account {
-    private final String username;
-    private final String email;
-    private final String passwordHash;
-    public int accountType; // 0=Customer, 1=Picker, 2=Admin
+// 1. Abstract Base Class
+public abstract class Account {
+    protected String username;
+    protected String email;
+    protected String passwordHash;
 
-    //  accepts a raw password and hashes it immediately
-    public Account(String pUsername, String pEmail, String pRawPassword, int pAccType, boolean isAlreadyHashed) {
-        this.username = pUsername;
-        this.email = pEmail;
-        this.accountType = pAccType;
-
-        if (isAlreadyHashed) {
-            this.passwordHash = pRawPassword;
-        } else {
-            this.passwordHash = PasswordUtils.hashPassword(pRawPassword);
-        }
+    public Account(String username, String email, String password, boolean isHashed) {
+        this.username = username;
+        this.email = email;
+        this.passwordHash = isHashed ? password : hashPassword(password);
     }
 
-    public boolean checkAccountLogin(String inputName, String inputPassword) {
-        if (this.username.equals(inputName) || this.email.equals(inputName)) {
-            // compare input hash to stored hash
-            return PasswordUtils.checkPassword(inputPassword, this.passwordHash);
-        }
-        return false;
+    // Common functionality for all accounts
+    public boolean checkLogin(String inputUser, String inputPass) {
+        return this.username.equals(inputUser) && this.passwordHash.equals(hashPassword(inputPass));
     }
 
-    // format data
+    // Abstract method: Every subclass MUST define its own type identifier
+    public abstract String getAccountType();
+
     public String toFileString() {
-        return username + "," + email + "," + passwordHash + "," + accountType;
+        // We save the type string so we know which class to load later
+        return username + "," + email + "," + passwordHash + "," + getAccountType();
     }
 
-    //public String getUsername() { return username; }
+    // Mock hash function (keep your existing one)
+    protected String hashPassword(String pass) {
+        return pass; // Replace with your actual hashing logic
+    }
 }
+
