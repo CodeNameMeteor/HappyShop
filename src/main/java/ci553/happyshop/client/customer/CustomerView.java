@@ -161,7 +161,7 @@ public class CustomerView  {
 
         taTrolley = new TextArea();
         taTrolley.setEditable(false);
-        taTrolley.setPrefSize(WIDTH/2, HEIGHT-50);
+        taTrolley.setPrefSize((double) WIDTH /2, HEIGHT-50);
 
         Button btnCancel = new Button("Cancel");
         btnCancel.setOnAction(this::buttonClicked);
@@ -188,7 +188,7 @@ public class CustomerView  {
 
         taReceipt = new TextArea();
         taReceipt.setEditable(false);
-        taReceipt.setPrefSize(WIDTH/2, HEIGHT-50);
+        taReceipt.setPrefSize((double) WIDTH /2, HEIGHT-50);
 
         Button btnCloseReceipt = new Button("OK & Close");
         btnCloseReceipt.setStyle(UIStyle.buttonStyle);
