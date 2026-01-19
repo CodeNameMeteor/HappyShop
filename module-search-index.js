@@ -1,1 +1,0 @@
-moduleSearchIndex = [{"l":"ci553.happyshop"}];updateSearchResults();
