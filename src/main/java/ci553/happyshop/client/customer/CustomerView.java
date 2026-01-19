@@ -87,6 +87,7 @@ public class CustomerView  {
         });
 
         Button btnSearch = new Button("\uD83D\uDD0D");
+        btnSearch.setDefaultButton(true);
         btnSearch.setStyle(UIStyle.buttonStyle);
         btnSearch.setOnAction(this::buttonClicked);
 

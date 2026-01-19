@@ -24,7 +24,7 @@ package ci553.happyshop.utility;
 public record UIStyle() {
 
     public static final int customerWinWidth = 600;
-    public static final int customerWinHeight = 300;
+    public static final int customerWinHeight = 400;
     public static final int removeProNotifierWinWidth = customerWinWidth/2 +160;
     public static final int removeProNotifierWinHeight = 230;
 
@@ -45,7 +45,7 @@ public record UIStyle() {
     public static final int EmergencyExitWinHeight = 300;
 
     public static final String labelTitleStyle ="-fx-font-weight: bold; " +
-            "-fx-font-size: 16px; -fx-text-fill: purple;";
+            "-fx-font-size: 16px; -fx-text-fill: black;";
 
     public static final String labelStyle = "-fx-font-weight: bold; " +
             "-fx-font-size: 14px; " +

@@ -42,7 +42,7 @@ public class Login {
 
         Button btnLogin = new Button("LOG IN");
         btnLogin.getStyleClass().add("primary-btn");
-        btnLogin.setMaxWidth(Double.MAX_VALUE); // Stretch button
+        btnLogin.setMaxWidth(Double.MAX_VALUE);
         btnLogin.setDefaultButton(true);
 
         Button btnRegister = new Button("Don't have an account? Sign up");
