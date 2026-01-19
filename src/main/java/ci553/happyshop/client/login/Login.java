@@ -16,6 +16,7 @@ public class Login {
     public interface LoginListener {
         void onLoginSuccess(String accountType);
     }
+
     //Store the instance of the window
     private static Login loginInstance;
     private Stage window;
@@ -137,13 +138,12 @@ public class Login {
         btnConfirm.setOnAction(e -> {
             if (regUser.getText().isEmpty() || regPass.getText().isEmpty()) {
                 regStatus.setText("Fields cannot be empty");
-            } else if(!accounts.checkNewCustomerDetails(regUser.getText(), regPass.getText(), regEmail.getText())) {
+            } else if (!accounts.checkNewCustomerDetails(regUser.getText(), regPass.getText(), regEmail.getText())) {
                 //checks if the inputted fields meet our requirements
                 //e.g. email must have @
                 //password must be above a set length.
                 regStatus.setText("Fields don't meet requirements");
-            }
-            else {
+            } else {
                 //if the inputted details are fine, create an account with these details
                 Account newCustomer = new CustomerAccount(
                         regUser.getText(),
@@ -172,7 +172,9 @@ public class Login {
 
         try {
             scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         regStage.setScene(scene);
         regStage.showAndWait();

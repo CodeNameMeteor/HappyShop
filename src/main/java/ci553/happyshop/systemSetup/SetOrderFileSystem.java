@@ -10,19 +10,19 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * This class is responsible for seting up the folder structure and orderCounter file required for the order system.
- *
+ * <p>
  * ⚠ WARNING:
- *  Running this class will WIPE ALL EXISTING ORDERS by deleting all files inside the orders folder.
- *  It resets the order system to a clean state.
- *
+ * Running this class will WIPE ALL EXISTING ORDERS by deleting all files inside the orders folder.
+ * It resets the order system to a clean state.
+ * <p>
  * It performs the following actions:
  * 1. Deletes all existing files inside the orders folder (but retains the folder structure).
  * 2. Ensures that all required order-related folders exist:
- *    - The main orders folder (`orders/`)
- *    - Subfolders for each order state: `ordered/`, `progressing/`, and `collected/`
+ * - The main orders folder (`orders/`)
+ * - Subfolders for each order state: `ordered/`, `progressing/`, and `collected/`
  * 3. Creates the orderCounter.txt file inside the 'orders/' folder if it does not already exist, initializing it to "0".
- *   - The `orderCounter.txt`
- *
+ * - The `orderCounter.txt`
+ * <p>
  * By centralizing file system setup for order storage in this class,
  * any future changes to the order-related directory structure or initialization behavior
  * can be managed in one place, avoiding scattered logic across the codebase.
@@ -60,8 +60,7 @@ public class SetOrderFileSystem {
             } finally {
                 lock.unlock();
             }
-        }
-        else {
+        } else {
             System.out.println("Folder " + folder + " does not exist");
         }
     }

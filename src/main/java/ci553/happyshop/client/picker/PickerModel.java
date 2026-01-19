@@ -13,28 +13,28 @@ import java.util.TreeSet;
  * PickerModel handles two main responsibilities:
  * 1. Observing OrderHub.
  * 2. Notifying PickerView to Updates user interface.
- *
+ * <p>
  * 1. Observing OrderHub.
  * PickerModel is an observer of  OrderHub, receiving orderMap from OrderHub.
  * When a picker claims a task, PickerModel:
  * - Retrieves the first unlocked order from the orderMap.
  * - Locks the selected order to prevent other pickers from accessing it.
  * - Notifies OrderHub to update the orderMap, and begin preparation of the order.
- *
+ * <p>
  * Once the order is collected by the customer, PickerModel:
  * - Unlocks the order.
  * - Notifies OrderHub to update the orderMap.
  * - Begins the next task if available.
- *
+ * <p>
  * All changes in order state are centralized through OrderHub to ensure synchronization.
  * No picker directly changes the display before OrderHub updates the shared orderMap;
  * instead, each PickerModel waits for OrderHub's notification to refresh its state.
- *
+ * <p>
  * Imagine the interaction flow:
  * PickerModel: "Hey OrderHub, I found an order that needs to be prepared. Please update the orderMap."
  * OrderHub: "Got it. I'll update the orderMap first."
  * OrderHub (after updating): "Attention all pickers: the orderMap has changed. Please refresh your views."
- *
+ * <p>
  * This ensures that all PickerModels stay in sync by only updating their local state
  * in response to centralized changes made by the OrderHub.
  */
@@ -44,15 +44,15 @@ public class PickerModel {
     private OrderHub orderHub = OrderHub.getOrderHub();
 
     //two elements that need to be passed to PickerView for updating.
-    private String displayTaOrderMap="";
-    private String displayTaOrderDetail ="";
+    private String displayTaOrderMap = "";
+    private String displayTaOrderDetail = "";
 
     // TreeMap (orderID,state) holding order IDs and their corresponding states.
     private static TreeMap<Integer, OrderState> orderMap = new TreeMap<>();
     private static TreeSet<Integer> lockedOrderIds = new TreeSet<>(); // Track locked orders by orderId
 
-    private int theOrderId=0; //Order ID assigned to a picker;
-                              // 0 means no order is currently assigned.
+    private int theOrderId = 0; //Order ID assigned to a picker;
+    // 0 means no order is currently assigned.
     private OrderState theOrderState;
 
     /**
@@ -95,19 +95,19 @@ public class PickerModel {
     }
 
     public void doCollected() throws IOException {
-        if(theOrderId!=0 && isOrderLocked(theOrderId)){
+        if (theOrderId != 0 && isOrderLocked(theOrderId)) {
             theOrderState = OrderState.Collected;
             notifyOrderHub(); // Notify the OrderHub about the state change
             displayTaOrderDetail = "";
             updatePickerView(); // update picker view
-            theOrderId=0;  //reset to no order is with the picker
+            theOrderId = 0;  //reset to no order is with the picker
             unlockOrder(theOrderId);//remove the order from locked orderId set
         }
     }
 
     // Registers this PickerModel instance with the OrderHub
     //so it can receive updates about orderMap changes.
-    public void registerWithOrderHub(){
+    public void registerWithOrderHub() {
         OrderHub orderHub = OrderHub.getOrderHub();
         orderHub.registerPickerModel(this);
     }
@@ -125,10 +125,10 @@ public class PickerModel {
 
     // Sets the order map with new data and refreshes the display.
     // This method is called by OrderHub to set orderMap for picker.
-    public void setOrderMap(TreeMap<Integer,OrderState> om) {
+    public void setOrderMap(TreeMap<Integer, OrderState> om) {
         orderMap.clear();
         orderMap.putAll(om);
-        displayTaOrderMap= buildOrderMapString();
+        displayTaOrderMap = buildOrderMapString();
         updatePickerView();
     }
 
@@ -136,7 +136,7 @@ public class PickerModel {
     //Each line contains the order ID followed by its state, aligned with spacing.
     private String buildOrderMapString() {
         StringBuilder sb = new StringBuilder();
-        for(Map.Entry<Integer, OrderState> entry : orderMap.entrySet()) {
+        for (Map.Entry<Integer, OrderState> entry : orderMap.entrySet()) {
             int orderId = entry.getKey();
             OrderState orderState = entry.getValue();
             sb.append(orderId).append(" ".repeat(8)).append(orderState).append("\n");
@@ -144,8 +144,7 @@ public class PickerModel {
         return sb.toString();
     }
 
-    private void updatePickerView()
-    {
-        pickerView.update(displayTaOrderMap,displayTaOrderDetail);
+    private void updatePickerView() {
+        pickerView.update(displayTaOrderMap, displayTaOrderDetail);
     }
 }

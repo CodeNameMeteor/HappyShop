@@ -6,34 +6,34 @@ import java.nio.file.Paths;
 /**
  * This class centralizes the location of all external storage folders and files used by the system.
  * It provides both String and Path representations for accessing and manipulating files and directories.
- *
+ * <p>
  * Key responsibilities:
- *
+ * <p>
  * 1. Image Storage:
- *    - imageFolder / imageFolderPath:
- *         The working folder for storing product images used in the live system.
- *    - imageResetFolder / imageResetFolderPath:
- *         A backup folder containing original product images.
- *         Used to restore image content when resetting the database.
- *
+ * - imageFolder / imageFolderPath:
+ * The working folder for storing product images used in the live system.
+ * - imageResetFolder / imageResetFolderPath:
+ * A backup folder containing original product images.
+ * Used to restore image content when resetting the database.
+ * <p>
  * 2. Order Management:
- *    - ordersFolder / ordersPath:
- *         Root folder for all orders.
- *    - orderedPath:
- *         Subfolder to store orders in the "Ordered" state.
- *    - progressingPath:
- *         Subfolder to store orders in the "Progressing" state (e.g., being prepared by a picker).
- *    - collectedPath:
- *         Subfolder to store orders in the "Collected" state (e.g., customer collected).
- *
+ * - ordersFolder / ordersPath:
+ * Root folder for all orders.
+ * - orderedPath:
+ * Subfolder to store orders in the "Ordered" state.
+ * - progressingPath:
+ * Subfolder to store orders in the "Progressing" state (e.g., being prepared by a picker).
+ * - collectedPath:
+ * Subfolder to store orders in the "Collected" state (e.g., customer collected).
+ * <p>
  * 3. Order ID Tracking:
- *    - orderCounterFile / orderCounterPath:
- *         A text file (orders/orderCounter.txt) used to track and increment the unique order ID
- *         when a new order is created.
- *
+ * - orderCounterFile / orderCounterPath:
+ * A text file (orders/orderCounter.txt) used to track and increment the unique order ID
+ * when a new order is created.
+ * <p>
  * These static paths ensure consistent folder usage throughout the application and simplify
  * file-related operations such as reset, loading, and persistence.
- *
+ * <p>
  * By centralizing all locations for external storage in this class,
  * any changes to these directory only need to be made here.
  * This avoids the need to modify the path throughout the entire codebase.

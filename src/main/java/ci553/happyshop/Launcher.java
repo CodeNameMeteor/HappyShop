@@ -12,10 +12,11 @@ import javafx.application.Application;
  * @version 1.0
  */
 
-public class Launcher  {
+public class Launcher {
     /**
      * The main method to start the full system.
      * It launches the Main JavaFX application.
+     *
      * @param args Command line arguments.
      */
     public static void main(String[] args) {

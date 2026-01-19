@@ -6,19 +6,19 @@ package ci553.happyshop.utility;
  * width, and height. This class helps to easily retrieve or manipulate the position
  * and size of a window, which is especially useful when positioning other UI elements
  * (like alert simulators or history windows) relative to the main window (warehouse window).
- *
+ * <p>
  * Example usage:
  * 1. Getting the position and size of the warehouse window:
- *    WindowBounds bounds = WarehouseView.getWarehouseWindowBounds();
- *    double x = bounds.x;
- *    double y = bounds.y;
- *    double width = bounds.width;
- *    double height = bounds.height;
- *
+ * WindowBounds bounds = WarehouseView.getWarehouseWindowBounds();
+ * double x = bounds.x;
+ * double y = bounds.y;
+ * double width = bounds.width;
+ * double height = bounds.height;
+ * <p>
  * 2. Using these values to position a new window (e.g., HistoryView, AlertSimulator)
- *    window.setX(bounds.x + bounds.width + 10);  // Positioning the new window to the right of the warehouse window
- *    window.setY(bounds.y);                      // Aligning vertically with the warehouse window
- *
+ * window.setX(bounds.x + bounds.width + 10);  // Positioning the new window to the right of the warehouse window
+ * window.setY(bounds.y);                      // Aligning vertically with the warehouse window
+ * <p>
  * This class helps maintain consistency in window placement and simplifies
  * window-related calculations, ensuring the UI elements are well positioned.
  */

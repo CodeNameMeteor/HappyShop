@@ -29,10 +29,10 @@ import java.util.stream.Stream;
  * all order-related logic across the system.</p>
  *
  * <p> It is the central coordinator responsible for managing all orders. It handles:
- *   Creating and tracking orders
- *   Maintaining and updating the internal order map, <OrderId, OrderState>
- *   Delegating file-related operations (e.g., updating state and moving files) to OrderFileManager class
- *   Loading orders in the "ordered" and "progressing" states from storage during system startup
+ * Creating and tracking orders
+ * Maintaining and updating the internal order map, <OrderId, OrderState>
+ * Delegating file-related operations (e.g., updating state and moving files) to OrderFileManager class
+ * Loading orders in the "ordered" and "progressing" states from storage during system startup
  *
  * <p> OrderHub also follows the Observer pattern: it notifies registered observers such as OrderTracker
  * and PickerModel whenever the order data changes, keeping the UI and business logic in sync.</p>
@@ -41,7 +41,7 @@ import java.util.stream.Stream;
  * managementing logic into a unified workflow.</p>
  */
 
-public class OrderHub  {
+public class OrderHub {
     private static OrderHub orderHub; //singleton instance
 
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
@@ -50,16 +50,16 @@ public class OrderHub  {
     private final Path progressingPath = StorageLocation.progressingPath;
     private final Path collectedPath = StorageLocation.collectedPath;
 
-    private TreeMap<Integer,OrderState> orderMap = new TreeMap<>();
-    private TreeMap<Integer,OrderState> OrderedOrderMap = new TreeMap<>();
-    private TreeMap<Integer,OrderState> progressingOrderMap = new TreeMap<>();
+    private TreeMap<Integer, OrderState> orderMap = new TreeMap<>();
+    private TreeMap<Integer, OrderState> OrderedOrderMap = new TreeMap<>();
+    private TreeMap<Integer, OrderState> progressingOrderMap = new TreeMap<>();
 
     /**
      * Two Lists to hold all registered OrderTracker and PickerModel observers.
      * These observers are notified whenever the orderMap is updated,
      * but each observer is only notified of the parts of the orderMap that are relevant to them.
      * - OrderTrackers will be notified of the full orderMap, including all orders (ordered, progressing, collected),
-     *   but collected orders are shown for a limited time (10 seconds).
+     * but collected orders are shown for a limited time (10 seconds).
      * - PickerModels will be notified only of orders in the "ordered" or "progressing" states, filtering out collected orders.
      */
     private ArrayList<OrderTracker> orderTrackerList = new ArrayList<>();
@@ -68,10 +68,11 @@ public class OrderHub  {
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     //Singleton pattern
-    private OrderHub() {}
+    private OrderHub() {
+    }
+
     public static OrderHub getOrderHub() {
-        if (orderHub == null)
-        {
+        if (orderHub == null) {
             orderHub = new OrderHub();
             return orderHub;
         }
@@ -84,7 +85,7 @@ public class OrderHub  {
         int orderId = OrderCounter.generateOrderId(); //get unique orderId
         String orderedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         //make an Order Object: id, Ordered_state, orderedDateTime, and productsList(trolley)
-        Order theOrder = new Order(orderId,OrderState.Ordered,orderedDateTime,trolley);
+        Order theOrder = new Order(orderId, OrderState.Ordered, orderedDateTime, trolley);
 
         //write order details to file for the orderId in orderedPath (ie. orders/ordered)
         String orderDetail = theOrder.orderDetails();
@@ -94,34 +95,35 @@ public class OrderHub  {
         orderMap.put(orderId, theOrder.getState()); //add the order to orderMap,state is Ordered initially
         notifyOrderTrackers(); //notify OrderTrackers
         notifyPickerModels();//notify pickers
-        
+
         return theOrder;
     }
 
     //Registers an OrderTracker to receive updates about changes.
-    public void registerOrderTracker(OrderTracker orderTracker){
+    public void registerOrderTracker(OrderTracker orderTracker) {
         orderTrackerList.add(orderTracker);
     }
-     //Notifies all registered observer_OrderTrackers to update and display the latest orderMap.
-    public void notifyOrderTrackers(){
-        for(OrderTracker orderTracker : orderTrackerList){
+
+    //Notifies all registered observer_OrderTrackers to update and display the latest orderMap.
+    public void notifyOrderTrackers() {
+        for (OrderTracker orderTracker : orderTrackerList) {
             orderTracker.setOrderMap(orderMap);
         }
     }
 
     //Registers a PickerModel to receive updates about changes.
-    public void registerPickerModel(PickerModel pickerModel){
+    public void registerPickerModel(PickerModel pickerModel) {
         pickerModelList.add(pickerModel);
     }
 
     //notify all pickers to show orderMap (only ordered and progressing states orders)
-    public void notifyPickerModels(){
-        TreeMap<Integer,OrderState> orderMapForPicker = new TreeMap<>();
+    public void notifyPickerModels() {
+        TreeMap<Integer, OrderState> orderMapForPicker = new TreeMap<>();
         progressingOrderMap = filterOrdersByState(OrderState.Progressing);
         OrderedOrderMap = filterOrdersByState(OrderState.Ordered);
         orderMapForPicker.putAll(progressingOrderMap);
         orderMapForPicker.putAll(OrderedOrderMap);
-        for(PickerModel pickerModel : pickerModelList){
+        for (PickerModel pickerModel : pickerModelList) {
             pickerModel.setOrderMap(orderMapForPicker);
         }
     }
@@ -141,20 +143,19 @@ public class OrderHub  {
     //Changes the state of the specified order, updates its file, and moves it to the appropriate folder.
     //trigger by PickerModel
     public void changeOrderStateMoveFile(int orderId, OrderState newState) throws IOException {
-        if(orderMap.containsKey(orderId) && !orderMap.get(orderId).equals(newState))
-        {
+        if (orderMap.containsKey(orderId) && !orderMap.get(orderId).equals(newState)) {
             //change orderState in OrderMap, notify OrderTrackers and pickers
             orderMap.put(orderId, newState);
             notifyOrderTrackers();
             notifyPickerModels();
 
             //change orderState in order file and move the file to new state folder
-            switch(newState){
+            switch (newState) {
                 case OrderState.Progressing:
-                    OrderFileManager.updateAndMoveOrderFile(orderId, newState,orderedPath,progressingPath);
+                    OrderFileManager.updateAndMoveOrderFile(orderId, newState, orderedPath, progressingPath);
                     break;
                 case OrderState.Collected:
-                    OrderFileManager.updateAndMoveOrderFile(orderId, newState,progressingPath,collectedPath);
+                    OrderFileManager.updateAndMoveOrderFile(orderId, newState, progressingPath, collectedPath);
                     removeCollectedOrder(orderId); //Scheduled removal
                     break;
             }
@@ -163,7 +164,7 @@ public class OrderHub  {
 
     /**
      * Removes collected orders from the system after they have been collected for 10 seconds.
-     *
+     * <p>
      * This ensures that collected orders are cleared from the active order pool and are no longer displayed
      * by the OrderTracker after the brief period. This keeps the system focused on orders in the
      * "ordered" and "progressing" states.
@@ -176,39 +177,39 @@ public class OrderHub  {
                 orderMap.remove(orderId); //remove collected order
                 System.out.println("Order " + orderId + " removed from tracker and OrdersMap.");
                 notifyOrderTrackers();
-            }, 10, TimeUnit.SECONDS );
+            }, 10, TimeUnit.SECONDS);
         }
     }
 
     // Reads details of an order for display in the picker once they started preparing the order.
-    public String  getOrderDetailForPicker(int orderId) throws IOException {
+    public String getOrderDetailForPicker(int orderId) throws IOException {
         OrderState state = orderMap.get(orderId);
-        if(state.equals(OrderState.Progressing)) {
-            return OrderFileManager.readOrderFile(progressingPath,orderId);
-        }else{
+        if (state.equals(OrderState.Progressing)) {
+            return OrderFileManager.readOrderFile(progressingPath, orderId);
+        } else {
             return "the function is only for picker";
         }
     }
 
     //Initializes the internal order map by loading the uncollected orders from the file system.
     // Called during system startup by the Main class.
-    public void initializeOrderMap(){
+    public void initializeOrderMap() {
         ArrayList<Integer> orderedIds = orderIdsLoader(orderedPath);
         ArrayList<Integer> progressingIds = orderIdsLoader(progressingPath);
-        if(!orderedIds.isEmpty()){
-            for(Integer orderId : orderedIds){
+        if (!orderedIds.isEmpty()) {
+            for (Integer orderId : orderedIds) {
                 orderMap.put(orderId, OrderState.Ordered);
             }
         }
-        if(!progressingIds.isEmpty()){
-            for(Integer orderId : progressingIds){
+        if (!progressingIds.isEmpty()) {
+            for (Integer orderId : progressingIds) {
                 orderMap.put(orderId, OrderState.Progressing);
             }
         }
         notifyOrderTrackers();
         notifyPickerModels();
-        System.out.println("orderMap initialized. "+ orderMap.size() + " orders in total, including:");
-        System.out.println( orderedIds.size() + " Orders, " +progressingIds.size() + " Orders progressing " );
+        System.out.println("orderMap initialized. " + orderMap.size() + " orders in total, including:");
+        System.out.println(orderedIds.size() + " Orders, " + progressingIds.size() + " Orders progressing ");
     }
 
     // Loads a list of order IDs from the specified directory.

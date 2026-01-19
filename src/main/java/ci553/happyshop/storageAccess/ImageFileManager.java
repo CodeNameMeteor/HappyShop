@@ -9,11 +9,11 @@ import java.nio.file.StandardCopyOption;
 /**
  * The ImageFileManager class handles the file operations related to product images in the warehouse system.
  * It is used by the Warehouse model to manage product images.
- *
+ * <p>
  * - When a product is deleted from stock, its image file is also deleted from the storage location.
  * - When a new product is added or an existing product's image is changed, the image is copied to the specified
- *  destination folder with the product's ID as the image file name, including the original file extension.
- *
+ * destination folder with the product's ID as the image file name, including the original file extension.
+ * <p>
  * The class provides utility methods to delete image files and copy them to a new location.
  */
 
@@ -21,7 +21,7 @@ public class ImageFileManager {
     /**
      * Deletes an image file from the specified folder.
      *
-     * @param folder The directory where the image is stored.
+     * @param folder   The directory where the image is stored.
      * @param fileName The name of the file to be deleted.
      * @throws IOException If an I/O error occurs during the file deletion.
      */
@@ -41,8 +41,8 @@ public class ImageFileManager {
      * Copies an image file from the source URI to a specified destination folder with a new name.
      * The new name is the product ID (fileNameWithoutExtension) with the original file extension.
      *
-     * @param sourceUri The URI of the source image file.
-     * @param destinationFolder The destination folder where the image will be copied.
+     * @param sourceUri                The URI of the source image file.
+     * @param destinationFolder        The destination folder where the image will be copied.
      * @param fileNameWithoutExtension The name to assign to the copied image file (without extension).
      * @return The name of the copied image file (with extension).
      */

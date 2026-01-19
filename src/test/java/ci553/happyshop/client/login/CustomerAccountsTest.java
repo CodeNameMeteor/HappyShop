@@ -45,6 +45,7 @@ class CustomerAccountsTest {
         assertTrue(customerAccounts.login("picker", "picker"));
         assertEquals("PICKER", customerAccounts.getCurrentAccountType());
     }
+
     @Test
     void testAddNewAccount() {
         //test if we can create a new account and successfully log in.
@@ -54,13 +55,15 @@ class CustomerAccountsTest {
 
         assertTrue(customerAccounts.login("newguy", "pass123"));
     }
+
     @Test
-    void testPasswordRequirements(){
+    void testPasswordRequirements() {
         //test if the password requirements work correctly
         assertTrue(customerAccounts.checkNewCustomerDetails("yahhh", "goodpassword", "Yah@gmail.com"));
         assertFalse(customerAccounts.checkNewCustomerDetails("wooooo", "bad", "good@gmail.com"));
         assertFalse(customerAccounts.checkNewCustomerDetails("wooowoo", "goodpassword", "badmail"));
     }
+
     @Test
     void testNewAccountWithAnExistingPassword() {
         //test if we can make an account with an existing password
@@ -70,6 +73,7 @@ class CustomerAccountsTest {
 
         assertTrue(customerAccounts.login("tester", "admin123"));
     }
+
     @Test
     void testLoginFailure() {
         //test failed login

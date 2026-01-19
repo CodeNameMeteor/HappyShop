@@ -8,6 +8,7 @@ public class PickerController {
     public void doProgressing() throws IOException {
         pickerModel.doProgressing();
     }
+
     public void doCollected() throws IOException {
         pickerModel.doCollected();
     }

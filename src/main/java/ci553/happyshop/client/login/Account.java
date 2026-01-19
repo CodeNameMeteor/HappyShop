@@ -23,7 +23,7 @@ public abstract class Account {
 
     public boolean checkLogin(String inputUser, String inputPassword) {
         //check if the user hash and password hash are the same as the inputted ones
-        return (AccountUtils.checkHash(inputUser, this.usernameHash ) || Objects.equals(inputUser, this.email)) && AccountUtils.checkHash(inputPassword, this.passwordHash);
+        return (AccountUtils.checkHash(inputUser, this.usernameHash) || Objects.equals(inputUser, this.email)) && AccountUtils.checkHash(inputPassword, this.passwordHash);
     }
 
     //abstract function so the subclasses can write their own logic.

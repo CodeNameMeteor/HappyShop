@@ -16,7 +16,7 @@ public class CustomerAccounts {
             System.out.println("No accounts found. Creating default admin.");
             addAccount(new AdminAccount("admin", "admin@shop.com", "admin123", false));
             addAccount(new CustomerAccount("frank", "frankscott@gmail.com", "scott", false));
-            addAccount(new PickerAccount("picker", "picker@pick.com","picker", false));
+            addAccount(new PickerAccount("picker", "picker@pick.com", "picker", false));
         }
     }
 
@@ -76,9 +76,9 @@ public class CustomerAccounts {
                     // factory logic: gets accounts from the file and creates new accounts for them.
                     if (type.equals("ADMIN")) {
                         accounts.add(new AdminAccount(user, email, pass, true));
-                    } else if(type.equals("PICKER")){
+                    } else if (type.equals("PICKER")) {
                         accounts.add(new PickerAccount(user, email, pass, true));
-                    }else {
+                    } else {
                         accounts.add(new CustomerAccount(user, email, pass, true));
                     }
                 }

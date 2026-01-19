@@ -10,7 +10,7 @@ import javafx.stage.Stage;
  * ensuring that windows are spaced out evenly and that new windows do not overlap with existing ones.
  * The class is designed to prevent instantiation and subclassing, and it provides a single static method,
  * `registerWindow`, to register new windows and calculate their position on the screen.
- *
+ * <p>
  * Purpose:
  * - To automatically arrange windows on the screen, avoiding overlap by dynamically adjusting their positions.
  * - The windows are arranged row by row with a configurable gap between them, starting from a base position.
@@ -82,12 +82,12 @@ public final class WinPosManager {
         if (occupiedWidth + width > SCREEN_WIDTH - BASE_X) {
             occupiedWidth = 0; // Reset occupiedWidth
             x = BASE_X;  //reset x for next row
-            y += height + GAP*4; // update y so that move to next row,
+            y += height + GAP * 4; // update y so that move to next row,
         }
 
         // If the new row exceeds screen height, windows are placed in the last row,
         if (y + height > SCREEN_HEIGHT - BASE_Y) {
-            y -= (height + GAP*4); // Stack on top
+            y -= (height + GAP * 4); // Stack on top
         }
 
         // Set window position

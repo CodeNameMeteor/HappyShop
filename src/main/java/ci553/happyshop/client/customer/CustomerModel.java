@@ -30,10 +30,10 @@ public class CustomerModel {
 
         searchResults.clear();
 
-        if(!keyword.isEmpty()){
+        if (!keyword.isEmpty()) {
             // 1. Try to search by ID first (exact match)
             Product p = databaseRW.searchByProductId(keyword);
-            if(p != null) {
+            if (p != null) {
                 searchResults.add(p);
             }
 
@@ -42,21 +42,21 @@ public class CustomerModel {
             // Note: If you want *only* one or the other, use 'else'
             ArrayList<Product> nameMatches = databaseRW.searchProduct(keyword);
 
-            for(Product nameMatch : nameMatches) {
+            for (Product nameMatch : nameMatches) {
                 // Avoid duplicates if ID search and Name search returned the same object
                 boolean alreadyInList = false;
-                for(Product existing : searchResults) {
-                    if(existing.getProductId().equals(nameMatch.getProductId())) {
+                for (Product existing : searchResults) {
+                    if (existing.getProductId().equals(nameMatch.getProductId())) {
                         alreadyInList = true;
                         break;
                     }
                 }
-                if(!alreadyInList) {
+                if (!alreadyInList) {
                     searchResults.add(nameMatch);
                 }
             }
 
-            if(searchResults.isEmpty()) {
+            if (searchResults.isEmpty()) {
                 System.out.println("No products found for: " + keyword);
             }
         } else {
@@ -98,11 +98,11 @@ public class CustomerModel {
     }
 
     void checkOut() throws IOException, SQLException {
-        if(!trolley.isEmpty()){
+        if (!trolley.isEmpty()) {
             ArrayList<Product> groupedTrolley = groupProductsById(trolley);
             ArrayList<Product> insufficientProducts = databaseRW.purchaseStocks(groupedTrolley);
 
-            if(insufficientProducts.isEmpty()){
+            if (insufficientProducts.isEmpty()) {
                 OrderHub orderHub = OrderHub.getOrderHub();
                 Order theOrder = orderHub.newOrder(trolley);
                 trolley.clear();
@@ -113,16 +113,15 @@ public class CustomerModel {
                         theOrder.getOrderedDateTime(),
                         ProductListFormatter.buildString(theOrder.getProductList())
                 );
-            }
-            else{
+            } else {
                 StringBuilder errorMsg = new StringBuilder();
-                for(Product p : insufficientProducts){
+                for (Product p : insufficientProducts) {
                     errorMsg.append(p.getProductId()).append(", ")
                             .append(p.getProductDescription()).append(" (Only ")
                             .append(p.getStockQuantity()).append(" available)\n");
                 }
 
-                for(Product p : insufficientProducts) {
+                for (Product p : insufficientProducts) {
                     trolley.removeIf(pt -> Objects.equals(pt.getProductId(), p.getProductId()));
                 }
 
@@ -132,7 +131,7 @@ public class CustomerModel {
                 alert.setContentText(errorMsg.toString());
                 alert.showAndWait();
 
-                if(trolley.isEmpty()) {
+                if (trolley.isEmpty()) {
                     displayTaTrolley = "Your trolley is empty";
                 } else {
                     displayTaTrolley = ProductListFormatter.buildString(trolley);
@@ -163,14 +162,14 @@ public class CustomerModel {
         return new ArrayList<>(grouped.values());
     }
 
-    void cancel(){
+    void cancel() {
         trolley.clear();
-        displayTaTrolley="";
+        displayTaTrolley = "";
         updateTrolleyAndReceiptView();
     }
 
-    void closeReceipt(){
-        displayTaReceipt="";
+    void closeReceipt() {
+        displayTaReceipt = "";
         updateTrolleyAndReceiptView();
     }
 

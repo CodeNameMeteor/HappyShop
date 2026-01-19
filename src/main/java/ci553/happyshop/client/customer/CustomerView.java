@@ -26,7 +26,7 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class CustomerView  {
+public class CustomerView {
     public CustomerController cusController;
 
     private final int WIDTH = UIStyle.customerWinWidth;
@@ -83,8 +83,11 @@ public class CustomerView  {
         tfSearch.setStyle(UIStyle.textFiledStyle);
         // Allow pressing "Enter" to trigger search
         tfSearch.setOnAction(e -> {
-            try { cusController.doAction("Search"); }
-            catch (Exception ex) { ex.printStackTrace(); }
+            try {
+                cusController.doAction("Search");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
 
         Button btnSearch = new Button("\uD83D\uDD0D");
@@ -163,7 +166,7 @@ public class CustomerView  {
 
         taTrolley = new TextArea();
         taTrolley.setEditable(false);
-        taTrolley.setPrefSize((double) WIDTH /2, HEIGHT-50);
+        taTrolley.setPrefSize((double) WIDTH / 2, HEIGHT - 50);
 
         Button btnCancel = new Button("Cancel");
         btnCancel.setOnAction(this::buttonClicked);
@@ -190,7 +193,7 @@ public class CustomerView  {
 
         taReceipt = new TextArea();
         taReceipt.setEditable(false);
-        taReceipt.setPrefSize((double) WIDTH /2, HEIGHT-50);
+        taReceipt.setPrefSize((double) WIDTH / 2, HEIGHT - 50);
 
         Button btnCloseReceipt = new Button("OK & Close");
         btnCloseReceipt.setStyle(UIStyle.buttonStyle);
@@ -204,20 +207,19 @@ public class CustomerView  {
     }
 
     private void buttonClicked(ActionEvent event) {
-        try{
-            Button btn = (Button)event.getSource();
+        try {
+            Button btn = (Button) event.getSource();
             String action = btn.getText();
             // Handle slight text variations
-            if(action.contains("Add to Trolley")){
+            if (action.contains("Add to Trolley")) {
                 action = "Add to Trolley";
                 showTrolleyOrReceiptPage(vbTrolleyPage);
             }
-            if(action.equals("OK & Close")){
+            if (action.equals("OK & Close")) {
                 showTrolleyOrReceiptPage(vbTrolleyPage);
             }
             cusController.doAction(action);
-        }
-        catch(SQLException | IOException e){
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }

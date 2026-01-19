@@ -28,7 +28,7 @@ public class OrderTracker {
     private static final TreeMap<Integer, OrderState> ordersMap = new TreeMap<>();
     private final TextArea taDisplay; //area to show all orderId and their state on the GUI
 
-     //Constructor initializes the UI, a title Label, and a TextArea for displaying the order details.
+    //Constructor initializes the UI, a title Label, and a TextArea for displaying the order details.
     public OrderTracker() {
         Label laTitle = new Label("Order_ID,  State");
         laTitle.setStyle(UIStyle.labelTitleStyle);
@@ -37,9 +37,9 @@ public class OrderTracker {
         taDisplay.setEditable(false);
         taDisplay.setStyle(UIStyle.textFiledStyle);
 
-        VBox vbox = new VBox(10,laTitle, taDisplay);
+        VBox vbox = new VBox(10, laTitle, taDisplay);
         vbox.setAlignment(Pos.TOP_CENTER);
-        vbox.setStyle(UIStyle. rootStyleGray);
+        vbox.setStyle(UIStyle.rootStyleGray);
 
         Scene scene = new Scene(vbox, WIDTH, HEIGHT);
         Stage window = new Stage();
@@ -47,7 +47,7 @@ public class OrderTracker {
         window.setTitle("🛒Order Tracker");
 
         // Registers the window's position with WinPosManager.
-        WinPosManager.registerWindow(window,WIDTH,HEIGHT); //calculate position x and y for this window
+        WinPosManager.registerWindow(window, WIDTH, HEIGHT); //calculate position x and y for this window
         window.show();
     }
 
@@ -55,7 +55,7 @@ public class OrderTracker {
      * Registers this OrderTracker instance with the OrderHub.
      * This allows the OrderTracker to receive updates on order state changes.
      */
-    public void registerWithOrderHub(){
+    public void registerWithOrderHub() {
         OrderHub orderHub = OrderHub.getOrderHub();
         orderHub.registerOrderTracker(this);
     }
@@ -70,11 +70,11 @@ public class OrderTracker {
         displayOrderMap();// Updates the display with the new order map.
     }
 
-     //Displays the current order map in the TextArea.
-     //Iterates over the ordersMap and formats each order ID and state for display.
+    //Displays the current order map in the TextArea.
+    //Iterates over the ordersMap and formats each order ID and state for display.
     private void displayOrderMap() {
         StringBuilder sb = new StringBuilder();
-        for(Map.Entry<Integer, OrderState> entry : ordersMap.entrySet()) {
+        for (Map.Entry<Integer, OrderState> entry : ordersMap.entrySet()) {
             int orderId = entry.getKey();
             OrderState orderState = entry.getValue();
             sb.append(orderId).append(" ".repeat(5)).append(orderState).append("\n");

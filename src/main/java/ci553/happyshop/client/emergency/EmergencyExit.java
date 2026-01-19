@@ -29,8 +29,8 @@ public class EmergencyExit {
     //The window displays a single button with a shutdown image,positioned via `WinPosManager`,
     private EmergencyExit() {
         ImageView ivExit = new ImageView("ShutDown.jpg");
-        ivExit.setFitWidth(WIDTH-100);
-        ivExit.setFitHeight(WIDTH-100);
+        ivExit.setFitWidth(WIDTH - 100);
+        ivExit.setFitHeight(WIDTH - 100);
         ivExit.setPreserveRatio(true);
 
         Button btnExit = new Button();
@@ -48,7 +48,7 @@ public class EmergencyExit {
         Stage window = new Stage();
         window.setScene(scene);
         window.setTitle("🛒 EXIT");
-        WinPosManager.registerWindow(window,WIDTH,HEIGHT); //calculate position x and y for this window
+        WinPosManager.registerWindow(window, WIDTH, HEIGHT); //calculate position x and y for this window
         window.show();
     }
 

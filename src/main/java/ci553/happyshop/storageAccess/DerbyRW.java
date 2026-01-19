@@ -7,20 +7,21 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-/** ProductTable definition
+/**
+ * ProductTable definition
  * "CREATE TABLE ProductTable(" +
- *         "productID CHAR(4) PRIMARY KEY," +
- *         "description VARCHAR(100)," +
- *         "unitPrice DOUBLE," +
- *         "image VARCHAR(100)," +
- *         "inStock INT," +
- *         "CHECK (inStock >= 0)" +
- *           ")",
+ * "productID CHAR(4) PRIMARY KEY," +
+ * "description VARCHAR(100)," +
+ * "unitPrice DOUBLE," +
+ * "image VARCHAR(100)," +
+ * "inStock INT," +
+ * "CHECK (inStock >= 0)" +
+ * ")",
  */
 
 public class DerbyRW implements DatabaseRW {
     private static String dbURL = DatabaseRWFactory.dbURL; // Shared by all instances
-    private  Lock lock = new ReentrantLock(); // Each instance has its own lock
+    private Lock lock = new ReentrantLock(); // Each instance has its own lock
 
     //search product by product Id or name, return a list of products or null
     //search by Id at first, if get null, search by product name
@@ -43,6 +44,7 @@ public class DerbyRW implements DatabaseRW {
         }
         return productList;
     }
+
     //search  by product Id, return a product or null
     public Product searchByProductId(String proId) throws SQLException {
         Product product = null;
@@ -54,10 +56,10 @@ public class DerbyRW implements DatabaseRW {
             pstmt.setString(1, proId);
 
             try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()){
-                    product= makeProObjFromDbRecord(rs);
+                if (rs.next()) {
+                    product = makeProObjFromDbRecord(rs);
                     System.out.println("Product " + proId + " found.");
-                }else{
+                } else {
                     System.out.println("Product " + proId + " not found.");
                 }
 
@@ -104,7 +106,7 @@ public class DerbyRW implements DatabaseRW {
         String imagePath = rs.getString("image");
         double unitPrice = rs.getDouble("unitPrice");
         int inStock = rs.getInt("inStock");
-        product =new Product(productId,description,imagePath,unitPrice,inStock);
+        product = new Product(productId, description, imagePath, unitPrice, inStock);
 
         // Show product details
         System.out.println("Product ID: " + productId);
@@ -113,14 +115,12 @@ public class DerbyRW implements DatabaseRW {
         System.out.println("unitPrice: " + unitPrice);
 
         // Check availability and display message
-        if(inStock <= 0){
-            System.out.println("Product " + productId+ " is NOT in stock");
-        }
-        else if(inStock < 10) {
-            System.out.println("Product " + productId+ "low stock warning!" + inStock + " units left.");
-        }
-        else {
-            System.out.println("Product " + productId+ " is available");
+        if (inStock <= 0) {
+            System.out.println("Product " + productId + " is NOT in stock");
+        } else if (inStock < 10) {
+            System.out.println("Product " + productId + "low stock warning!" + inStock + " units left.");
+        } else {
+            System.out.println("Product " + productId + " is available");
         }
 
         System.out.println("-----"); // Divider for readability
@@ -204,7 +204,7 @@ public class DerbyRW implements DatabaseRW {
         String updateSql = "UPDATE ProductTable SET " +
                 "description = ?, " +
                 "unitPrice = ?, " +
-                "image = ?, "+
+                "image = ?, " +
                 "inStock = ? " +
                 "WHERE productID = ?";
 
@@ -247,13 +247,12 @@ public class DerbyRW implements DatabaseRW {
                     System.out.println("image: " + rs.getString("image"));
                 }
             }
-        }
-        finally {
+        } finally {
             lock.unlock(); // Always release the lock after the operation
         }
     }
 
-//warehouse delete an existing product
+    //warehouse delete an existing product
     public void deleteProduct(String proId) throws SQLException {
         lock.lock();
         String selectSql = "SELECT * FROM ProductTable WHERE productID = ?";
@@ -283,9 +282,7 @@ public class DerbyRW implements DatabaseRW {
             deleteStmt.setString(1, proId);
             deleteStmt.executeUpdate();
             System.out.println("Product " + proId + " deleted from database.");
-        }
-
-        finally {
+        } finally {
             lock.unlock(); // Always release the lock after the operation
         }
     }
@@ -294,7 +291,7 @@ public class DerbyRW implements DatabaseRW {
     //warehouse tries to add a new prodcut, id must be unique
     public boolean isProIdAvailable(String proId) throws SQLException {
         String query = "SELECT COUNT(*) FROM ProductTable WHERE productID = ?";
-                             //the count of records that match the given proId.
+        //the count of records that match the given proId.
         try (Connection conn = DriverManager.getConnection(dbURL);
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, proId);
@@ -313,13 +310,13 @@ public class DerbyRW implements DatabaseRW {
 
     //   /images/0001TV.jpg
     //warehouse adds a new product to database
-    public void insertNewProduct(String id, String des,double price,String image,int stock) throws SQLException {
+    public void insertNewProduct(String id, String des, double price, String image, int stock) throws SQLException {
         lock.lock();
         String insertSql = "INSERT INTO ProductTable VALUES(?, ?, ?, ?, ?)";
         String selectSql = "SELECT * FROM ProductTable WHERE productID = ?";
         try (Connection conn = DriverManager.getConnection(dbURL);
-        PreparedStatement insertStmt = conn.prepareStatement(insertSql);
-        PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
+             PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+             PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
             conn.setAutoCommit(true); // Set auto-commit to true immediately
             insertStmt.setString(1, id);
             insertStmt.setString(2, des);
@@ -336,8 +333,7 @@ public class DerbyRW implements DatabaseRW {
                 System.out.println("Unit Price: " + rs.getDouble("unitPrice"));
                 System.out.println("Stock: " + rs.getInt("inStock"));
             }
-        }
-        finally {
+        } finally {
             lock.unlock(); // Always release the lock after the operation
         }
     }

@@ -14,10 +14,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * The setDB class is responsible for resetting the database when the system is first initialized.
  * This class performs operations that delete and recreate the database tables, as well as insert
  * default values for a fresh start. Ensuring that everything is properly set up for the fresh database state
- *
+ * <p>
  * WARNING: This class should only be used once when starting the system for the first time. It
  * will wipe all current data in the database and replace it with a fresh, predefined structure and data.
- *
+ * <p>
  * Key operations:
  * 1. Deletes all existing tables in the database.
  * 2. Recreates the database tables based on the initial schema.
@@ -30,7 +30,7 @@ public class SetDatabase {
 
     //Use the shared database URL from the factory, appending `;create=true` to create the database if it doesn't exist
     private static final String dbURL = DatabaseRWFactory.dbURL + ";create=true";
-                                  //the value is "jdbc:derby:happyShopDB;create=true"
+    //the value is "jdbc:derby:happyShopDB;create=true"
 
     private static Path imageWorkingFolderPath = StorageLocation.imageFolderPath;
     private static Path imageBackupFolderPath = StorageLocation.imageResetFolderPath;
@@ -68,11 +68,11 @@ public class SetDatabase {
                     }
                 }
             }
-        }
-        finally {
+        } finally {
             lock.unlock();  // 🔓 Always unlock in finally block
         }
     }
+
     //Recreates the database tables Inserts default values into the newly created tables.
     private void initializeTable() throws SQLException {
         lock.lock(); // Lock to ensure thread safety
@@ -148,7 +148,7 @@ public class SetDatabase {
         System.out.println(title);  // Print formatted output
 
         try (Connection connection = DriverManager.getConnection(dbURL);
-             Statement stat = connection.createStatement()){
+             Statement stat = connection.createStatement()) {
             ResultSet resultSet = stat.executeQuery(sqlQuery);
             while (resultSet.next()) {
                 String productID = resultSet.getString("productID");
@@ -159,8 +159,7 @@ public class SetDatabase {
                 String record = String.format("%-12s %-20s %-10.2f %-10d %s", productID, description, unitPrice, inStock, image);
                 System.out.println(record);  // Print formatted output
             }
-        }
-        finally {
+        } finally {
             lock.unlock();
         }
     }
@@ -181,8 +180,7 @@ public class SetDatabase {
             } finally {
                 lock.unlock();
             }
-        }
-        else {
+        } else {
             System.out.println("Folder " + folder + " does not exist");
         }
     }
@@ -193,14 +191,14 @@ public class SetDatabase {
      * It accepts two arguments:
      * 1. directory (Path or folder) path from which the traversal begins (the starting point of the walk).
      * 2. A FileVisitor object that defines the actions to be performed when a file or directory is visited.
-     *    The visitor is an instance of the FileVisitor interface, which provides methods for handling different events during the traversal.
-     *
+     * The visitor is an instance of the FileVisitor interface, which provides methods for handling different events during the traversal.
+     * <p>
      * Here, we use an anonymous class to create the second argument - the instance (object) –
      * An anonymous class allows you to extend a superclass (or implement an interface) and instantiate it in a single, concise step,
      * without needing to define a separate named class. It combines both class extension and object creation into one operation,
      * typically used when you need a one-off implementation of a class or interface.
      * (Note: the object is the anonymous class's)
-     *
+     * <p>
      * We did not use Files.walkFileTree(folder, new FileVisitor<>()) because FileVisitor is an interface, and we would need to implement
      * all of its methods ourselves. Instead, we use Files.walkFileTree(folder, new SimpleFileVisitor<>()) because:
      * - SimpleFileVisitor<> is an abstract class that implements the FileVisitor interface with default method implementations.
@@ -228,8 +226,7 @@ public class SetDatabase {
                     Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
                 }
             }
-        }
-        finally {
+        } finally {
             lock.unlock();
         }
         System.out.println("Copied files from: " + source + " → " + destination);

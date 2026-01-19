@@ -16,31 +16,32 @@ import java.util.ArrayList;
 public class WarehouseModel {
     public WarehouseView view;
     public DatabaseRW databaseRW; //Interface type, not specific implementation
-                         //Benefits: Flexibility: Easily change the database implementation.
+    //Benefits: Flexibility: Easily change the database implementation.
 
     private ArrayList<Product> productList = new ArrayList<>(); // search results fetched from the database
     private Product theSelectedPro; // the product selected from the ListView before the user edits or deletes
     private String theNewProId;
 
     //information used to update editProduct child in WarehouseView
-    String displayIdEdit="";
-    String displayPriceEdit="";
-    String displayStockEdit="";
-    String displayDescriptionEdit="";
-    String displayImageUrlEdit ="WarehouseImageHolder.jpg";
+    String displayIdEdit = "";
+    String displayPriceEdit = "";
+    String displayStockEdit = "";
+    String displayDescriptionEdit = "";
+    String displayImageUrlEdit = "WarehouseImageHolder.jpg";
 
     public HistoryWindow historyWindow;
     public AlertSimulator alertSimulator;
-    private String displayInputErrorMsg =""; //error message showing in the alertSimulator
+    private String displayInputErrorMsg = ""; //error message showing in the alertSimulator
     private ArrayList<String> displayManageHistory = new ArrayList<>();// Manage Product history
-                                                               //shows in the HistoryWindow
-    private enum ManageProductType{
+
+    //shows in the HistoryWindow
+    private enum ManageProductType {
         Edited,
         Deleted,
         New
     }
 
-    private enum UpdateForAction{
+    private enum UpdateForAction {
         //actions in Search Page
         BtnSearch,  //actually its updating the Observable ProductList
         BtnEdit,
@@ -63,8 +64,7 @@ public class WarehouseModel {
         String keyword = view.tfSearchKeyword.getText().trim();
         if (!keyword.isEmpty()) {
             productList = databaseRW.searchProduct(keyword);
-        }
-        else{
+        } else {
             productList.clear();
             System.out.println("please type product ID or name to search");
         }
@@ -73,8 +73,8 @@ public class WarehouseModel {
 
     void doDelete() throws SQLException, IOException {
         System.out.println("delete gets called in model");
-        Product pro  = view.obrLvProducts.getSelectionModel().getSelectedItem();
-        if (pro != null ) {
+        Product pro = view.obrLvProducts.getSelectionModel().getSelectedItem();
+        if (pro != null) {
             theSelectedPro = pro;
             productList.remove(theSelectedPro); //remove the product from product List
 
@@ -87,8 +87,7 @@ public class WarehouseModel {
 
             updateView(UpdateForAction.BtnDelete);
             theSelectedPro = null;
-        }
-        else{
+        } else {
             System.out.println("No product was selected");
         }
     }
@@ -100,7 +99,7 @@ public class WarehouseModel {
             theSelectedPro = pro;
             displayIdEdit = theSelectedPro.getProductId();
             displayPriceEdit = String.format("%.2f", theSelectedPro.getUnitPrice());
-            displayStockEdit = String.valueOf (theSelectedPro.getStockQuantity());
+            displayStockEdit = String.valueOf(theSelectedPro.getStockQuantity());
             displayDescriptionEdit = theSelectedPro.getProductDescription();
 
             String relativeImageUri = StorageLocation.imageFolder + theSelectedPro.getProductImageName();
@@ -109,78 +108,76 @@ public class WarehouseModel {
 
             System.out.println("get new pro image name: " + displayImageUrlEdit);
             updateView(UpdateForAction.BtnEdit);
-        }
-        else{
+        } else {
             System.out.println("No product was selected");
         }
 
     }
 
-    void doCancel(){
-       if(view.theProFormMode.equals("EDIT")){
-           updateView(UpdateForAction.BtnCancelEdit);
-           theSelectedPro = null;
-       }
-       if(view.theProFormMode.equals("NEW")){
-           updateView(UpdateForAction.BtnCancelNew);
-           theNewProId = null;
-       }
+    void doCancel() {
+        if (view.theProFormMode.equals("EDIT")) {
+            updateView(UpdateForAction.BtnCancelEdit);
+            theSelectedPro = null;
+        }
+        if (view.theProFormMode.equals("NEW")) {
+            updateView(UpdateForAction.BtnCancelNew);
+            theNewProId = null;
+        }
     }
+
     void doSubmit() throws SQLException, IOException {
-        if(view.theProFormMode.equals("EDIT")){
+        if (view.theProFormMode.equals("EDIT")) {
             doSubmitEdit();
         }
-        if(view.theProFormMode.equals("NEW")){
+        if (view.theProFormMode.equals("NEW")) {
             doSubmitNew();
         }
     }
 
     private void doSubmitEdit() throws IOException, SQLException {
         System.out.println("ok edit is called");
-        if(theSelectedPro!=null) {
-            String id=theSelectedPro.getProductId();
+        if (theSelectedPro != null) {
+            String id = theSelectedPro.getProductId();
             System.out.println("theSelectedPro " + id); //debug purpose
             String imageName = theSelectedPro.getProductImageName();
 
-            String textPrice =view.tfPriceEdit.getText().trim();
-            String textStock =view.tfStockEdit.getText().trim();
+            String textPrice = view.tfPriceEdit.getText().trim();
+            String textStock = view.tfStockEdit.getText().trim();
             String description = view.taDescriptionEdit.getText().trim();
 
-            if(view.isUserSelectedImageEdit){  //if the user changed image
+            if (view.isUserSelectedImageEdit) {  //if the user changed image
                 ImageFileManager.deleteImageFile(StorageLocation.imageFolder, imageName); //delete the old image
                 //copy the user selected image to project image folder
                 //we use productId as image name, but we need to get its extension from the user selected image
-                imageName = ImageFileManager.copyFileToDestination(view.userSelectedImageUriEdit, StorageLocation.imageFolder,id);
+                imageName = ImageFileManager.copyFileToDestination(view.userSelectedImageUriEdit, StorageLocation.imageFolder, id);
             }
 
-            if(!validateInputEditChild(textPrice,textStock,description)){
+            if (!validateInputEditChild(textPrice, textStock, description)) {
                 updateView(UpdateForAction.ShowInputErrorMsg);
-            }
-            else{
+            } else {
                 double price = Double.parseDouble(textPrice);
-                int stock= Integer.parseInt(textStock);
+                int stock = Integer.parseInt(textStock);
                 //update datbase
-                databaseRW.updateProduct(id,description,price,imageName,stock);
+                databaseRW.updateProduct(id, description, price, imageName, stock);
 
                 updateView(UpdateForAction.BtnSummitEdit);
-                theSelectedPro=null;
+                theSelectedPro = null;
             }
-        }
-        else{
+        } else {
             System.out.println("No Product Selected");
         }
     }
 
     void doChangeStockBy(String addOrSub) throws SQLException {
         int oldStock = Integer.parseInt(view.tfStockEdit.getText().trim());
-        int newStock =oldStock;
+        int newStock = oldStock;
         String TextChangeBy = view.tfChangeByEdit.getText().trim();
-        if(!TextChangeBy.isEmpty()){
-            if(!validateInputChangeStockBy(TextChangeBy)){
+        if (!TextChangeBy.isEmpty()) {
+            if (!validateInputChangeStockBy(TextChangeBy)) {
                 updateView(UpdateForAction.ShowInputErrorMsg);
-            } else{
+            } else {
                 int changeBy = Integer.parseInt(TextChangeBy);
-                switch(addOrSub){
+                switch (addOrSub) {
                     case "add":
                         newStock = oldStock + changeBy;
                         break;
@@ -188,13 +185,13 @@ public class WarehouseModel {
                         newStock = oldStock - changeBy;
                         break;
                 }
-                displayStockEdit = String.valueOf (newStock);
+                displayStockEdit = String.valueOf(newStock);
                 updateView(UpdateForAction.BtnChangeStockBy);
             }
         }
     }
 
-    private  boolean validateInputChangeStockBy(String txChangeBy) throws SQLException {
+    private boolean validateInputChangeStockBy(String txChangeBy) throws SQLException {
         StringBuilder errorMessage = new StringBuilder();
         // Validate Stock changBy Quantity (must be an integer)
         try {
@@ -226,20 +223,20 @@ public class WarehouseModel {
         } else {
             //copy the user selected image to project image folder and using productId as image name
             //and get the image extension from the source image, we write this name to database
-            String imageNameWithExtension = ImageFileManager.copyFileToDestination(view.imageUriNewPro, StorageLocation.imageFolder,theNewProId);
+            String imageNameWithExtension = ImageFileManager.copyFileToDestination(view.imageUriNewPro, StorageLocation.imageFolder, theNewProId);
             double price = Double.parseDouble(textPrice);
             int stock = Integer.parseInt(textStock);
 
             //insertNewProduct to databse (String id, String des,double price,String image,int stock)
             //a record in databse looks like ('0001', '40 inch TV', 269.00,'0001TV.jpg',100)"
-            databaseRW.insertNewProduct(theNewProId,description,price,imageNameWithExtension,stock);
+            databaseRW.insertNewProduct(theNewProId, description, price, imageNameWithExtension, stock);
             updateView(UpdateForAction.BtnSummitNew);
             theNewProId = null;
         }
     }
 
-    private  boolean validateInputEditChild(String txPrice, String txStock,
-                                         String description) throws SQLException {
+    private boolean validateInputEditChild(String txPrice, String txStock,
+                                           String description) throws SQLException {
 
         StringBuilder errorMessage = new StringBuilder();
 
@@ -261,7 +258,7 @@ public class WarehouseModel {
         }
 
         // Validate if there is unperformed stock changeBy:
-        if(!view.tfChangeByEdit.getText().trim().isEmpty()){
+        if (!view.tfChangeByEdit.getText().trim().isEmpty()) {
             errorMessage.append("\u2022 Change stock by not applied.\n");
         }
 
@@ -287,8 +284,8 @@ public class WarehouseModel {
         return true;
     }
 
-    private  boolean validateInputNewProChild(String id, String txPrice, String txStock,
-                                   String description, String imageUri) throws SQLException {
+    private boolean validateInputNewProChild(String id, String txPrice, String txStock,
+                                             String description, String imageUri) throws SQLException {
 
         StringBuilder errorMessage = new StringBuilder();
         // Validate Id (must be exactly 4 digits)
@@ -296,7 +293,7 @@ public class WarehouseModel {
             errorMessage.append("\u2022 Product ID must be exactly 4 digits.\n");
 
         //check Id is unique
-        if(!databaseRW.isProIdAvailable(id))
+        if (!databaseRW.isProIdAvailable(id))
             errorMessage.append("\u2022 Product ID ").append(id).append(" is not available.\n");
 
         // Validate Price (must be a positive number, and two digitals )
@@ -332,7 +329,7 @@ public class WarehouseModel {
             errorMessage.append("\u2022 Product description cannot be empty.\n");
 
         // Validate Image Path
-        if (imageUri == null )
+        if (imageUri == null)
             errorMessage.append("\u2022 An image must be selected.");
 
         // Show Alert if there are errors
@@ -344,13 +341,13 @@ public class WarehouseModel {
     }
 
 
-    private void updateView(UpdateForAction updateFor){
+    private void updateView(UpdateForAction updateFor) {
         switch (updateFor) {
             case UpdateForAction.BtnSearch:
                 view.updateObservableProductList(productList);
                 break;
             case UpdateForAction.BtnEdit:
-                view.updateEditProductChild(displayIdEdit,displayPriceEdit,displayStockEdit,displayDescriptionEdit,displayImageUrlEdit);
+                view.updateEditProductChild(displayIdEdit, displayPriceEdit, displayStockEdit, displayDescriptionEdit, displayImageUrlEdit);
                 break;
             case UpdateForAction.BtnDelete:
                 view.updateObservableProductList(productList); //update search page in view
@@ -381,7 +378,7 @@ public class WarehouseModel {
                 break;
 
             case UpdateForAction.BtnSummitNew:
-                showManageStockHistory(ManageProductType.New );
+                showManageStockHistory(ManageProductType.New);
                 view.resetNewProChild();
                 alertSimulator.closeAlertSimulatorWindow();//close AlertSimulatorWindow if exists
                 break;
@@ -391,9 +388,9 @@ public class WarehouseModel {
         }
     }
 
-    private void showManageStockHistory(ManageProductType type){
+    private void showManageStockHistory(ManageProductType type) {
         String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        String record="";
+        String record = "";
         switch (type) {
             case ManageProductType.Edited:
                 record = theSelectedPro.getProductId() + " edited successfully, " + dateTime;
@@ -401,10 +398,10 @@ public class WarehouseModel {
             case ManageProductType.Deleted:
                 record = theSelectedPro.getProductId() + " deleted successfully, " + dateTime;
                 break;
-            case ManageProductType.New :
+            case ManageProductType.New:
                 record = theNewProId + " added to database successfully, " + dateTime;
         }
-        if(!record.equals(""))
+        if (!record.equals(""))
             displayManageHistory.add(record);
         historyWindow.showManageHistory(displayManageHistory);
     }

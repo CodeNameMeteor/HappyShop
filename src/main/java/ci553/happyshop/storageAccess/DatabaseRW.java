@@ -8,22 +8,22 @@ import java.util.ArrayList;
 /**
  * The DatabaseRW interface defines the contract for interacting with the product database.
  * It is currently implemented by the DerbyRW class, which provides the actual functionality.
- *
+ * <p>
  * Responsibilities:
  * - Searching for products by keyword or product ID.
  * - Performing stock updates and validations during purchases.
  * - Updating, deleting, or inserting products.
  * - Checking whether a product ID is available before insertion.
- *
+ * <p>
  * Why use this interface:
  * Introducing this interface allows for better separation of specification and implementation,
  * making the system more adaptable and maintainable.
- *
+ * <p>
  * 1. **Ease of Substitution**: If the application switches to a different database system
- *    (e.g., from Derby to MySQL or SQLite), a new implementation can be provided without affecting other components.
- *
+ * (e.g., from Derby to MySQL or SQLite), a new implementation can be provided without affecting other components.
+ * <p>
  * 2. **Improved Testability**: During unit testing, mock implementations can simulate database behavior,
- *    enabling effective testing without requiring a live database connection.
+ * enabling effective testing without requiring a live database connection.
  */
 
 public interface DatabaseRW {
@@ -39,6 +39,7 @@ public interface DatabaseRW {
 
     /**
      * Searches for a product by its unique product ID.
+     *
      * @param productId the product ID
      * @return the matching product, or null if not found
      */
@@ -58,11 +59,11 @@ public interface DatabaseRW {
     /**
      * Updates the details of a product identified by its ID.
      *
-     * @param id         the product ID
-     * @param des        the new description
-     * @param price      the new price
-     * @param imageName  the new image file name
-     * @param stock      the updated stock quantity
+     * @param id        the product ID
+     * @param des       the new description
+     * @param price     the new price
+     * @param imageName the new image file name
+     * @param stock     the updated stock quantity
      */
     void updateProduct(String id, String des, double price, String imageName, int stock) throws SQLException;
 
@@ -72,16 +73,18 @@ public interface DatabaseRW {
 
     /**
      * Inserts a new product into the database.
-     * @param id      the product ID
-     * @param des     the product description
-     * @param price   the product price
-     * @param image   the image file name
-     * @param stock   the initial stock quantity
+     *
+     * @param id    the product ID
+     * @param des   the product description
+     * @param price the product price
+     * @param image the image file name
+     * @param stock the initial stock quantity
      */
     void insertNewProduct(String id, String des, double price, String image, int stock) throws SQLException;
 
     /**
      * Checks whether the given product ID is available for use (i.e., not already in use).
+     *
      * @param productId the product ID to check
      * @return true if the ID is available, false if it already exists in the database
      */
