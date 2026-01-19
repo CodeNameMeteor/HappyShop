@@ -71,7 +71,6 @@ public class CustomerModel {
 
     void addToTrolley() {
         Product selectedProduct = cusView.lvProducts.getSelectionModel().getSelectedItem();
-
         if (selectedProduct != null) {
             if (selectedProduct.getStockQuantity() > 0) {
                 if (trolley.contains(selectedProduct)) {
