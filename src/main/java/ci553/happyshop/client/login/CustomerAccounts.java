@@ -46,6 +46,7 @@ public class CustomerAccounts {
 
     private void saveAccounts() {
         //write accounts to the file.
+        //writes text to a character output stream, buffering characters to efficiently write single characters arrays and strings.
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
             for (Account acc : accounts) {
                 writer.write(acc.toFileString());
