@@ -4,9 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class CustomerAccounts {
-    private Account currentAccount = null;
-    private final ArrayList<Account> accounts = new ArrayList<>();
-    private final String FILE_NAME = "users.txt";
+    private Account currentAccount = null; //store current account
+    private final ArrayList<Account> accounts = new ArrayList<>(); //arraylist to store accounts
+    private final String FILE_NAME = "users.txt"; //default file name
 
     public CustomerAccounts() {
         loadAccounts();
@@ -32,7 +32,7 @@ public class CustomerAccounts {
         return false;
     }
 
-    // Generic add method that accepts any child of Account
+    // generic add method that accepts any child of Account
     public void addAccount(Account newAcc) {
         accounts.add(newAcc);
         saveAccounts();
@@ -45,6 +45,7 @@ public class CustomerAccounts {
     }
 
     private void saveAccounts() {
+        //write accounts to the file.
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
             for (Account acc : accounts) {
                 writer.write(acc.toFileString());
@@ -56,6 +57,7 @@ public class CustomerAccounts {
     }
 
     private void loadAccounts() {
+        //load accounts from the file
         File file = new File(FILE_NAME);
         if (!file.exists()) return;
 
@@ -64,15 +66,18 @@ public class CustomerAccounts {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length == 4) {
+                    //get each individual section of the account
                     String user = parts[0];
                     String email = parts[1];
                     String pass = parts[2];
                     String type = parts[3];
 
-                    // FACTORY LOGIC: Decide which class to create based on file data
+                    // factory logic: gets accounts from the file and creates new accounts for them.
                     if (type.equals("ADMIN")) {
                         accounts.add(new AdminAccount(user, email, pass, true));
-                    } else {
+                    } else if(type.equals("PICKER")){
+                        accounts.add(new PickerAccount(user, email, pass, true));
+                    }else {
                         accounts.add(new CustomerAccount(user, email, pass, true));
                     }
                 }
@@ -82,7 +87,7 @@ public class CustomerAccounts {
         }
     }
 
-    // Validation logic remains similar
+    // Validation Logic.
     public boolean checkNewCustomerDetails(String name, String pass, String email) {
         return email.contains("@") && pass.length() >= 5;
     }
