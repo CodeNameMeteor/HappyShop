@@ -5,8 +5,16 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * AccountUtils provides hashing functionality
+ * allows for a given string to be hashed and to check hashs against hash's
+ */
 public class AccountUtils {
-    //Hash's a given string.
+    /**
+     * hashString returns a hashed version of a given string
+     * @param data inputted String to be hashed
+     * @return returns the hashed hex string of the inputted data
+     */
     public static String hashString(String data) {
         try {
             //Message Digest is a class inside of Java.Security
@@ -31,6 +39,12 @@ public class AccountUtils {
         }
     }
 
+    /**
+     * checkHash hash's an inputted string and compares it to a another
+     * @param inputPassword the password the user inputted
+     * @param storedHash the hash that is stored in the file
+     * @return returns true if the password hash is the same as stored one, false if not.
+     */
     public static boolean checkHash(String inputPassword, String storedHash) {
         //converts the inputted password into a hash and compare it to the stored hash.
         String inputHash = hashString(inputPassword);
