@@ -1,6 +1,6 @@
 package ci553.happyshop.client.login;
 
-// 2. Customer Subclass
+//Customer Subclass
 public class CustomerAccount extends Account {
     public CustomerAccount(String user, String email, String pass, boolean isHashed) {
         super(user, email, pass, isHashed);
@@ -11,6 +11,4 @@ public class CustomerAccount extends Account {
         return "CUSTOMER"; // Defined Constant
     }
 
-    // You can now add Customer-only methods here!
-    // public void addToBasket(...) {}
 }
