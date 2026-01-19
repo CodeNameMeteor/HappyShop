@@ -10,6 +10,10 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
+/**
+ * the class login is used to show the login and registration window
+ * enabling users to login into their accounts.
+ */
 public class Login {
 
     //tracks if a login was a success
