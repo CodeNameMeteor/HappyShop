@@ -103,7 +103,6 @@ public class CustomerView {
         btnAddToTrolley.setStyle(UIStyle.buttonStyle);
         btnAddToTrolley.setOnAction(this::buttonClicked);
 
-        // --- LIST VIEW SETUP ---
         obsProList = FXCollections.observableArrayList();
         lvProducts = new ListView<>(obsProList);
 

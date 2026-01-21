@@ -25,23 +25,10 @@ public class CustomerModel {
     private String displayTaReceipt = "";
 
     void search() throws SQLException {
-        // --- CHANGED: Get text from the single search bar ---
         String keyword = cusView.tfSearch.getText().trim();
-
         searchResults.clear();
-
         if (!keyword.isEmpty()) {
-            // 1. Try to search by ID first (exact match)
-            Product p = databaseRW.searchByProductId(keyword);
-            if (p != null) {
-                searchResults.add(p);
-            }
-
-            // 2. Also search by Name (partial match)
-            // If the ID search didn't find anything, OR if we want to show name matches too
-            // Note: If you want *only* one or the other, use 'else'
             ArrayList<Product> nameMatches = databaseRW.searchProduct(keyword);
-
             for (Product nameMatch : nameMatches) {
                 // Avoid duplicates if ID search and Name search returned the same object
                 boolean alreadyInList = false;
@@ -55,16 +42,12 @@ public class CustomerModel {
                     searchResults.add(nameMatch);
                 }
             }
-
             if (searchResults.isEmpty()) {
                 System.out.println("No products found for: " + keyword);
             }
         } else {
-            // Optional: If empty, maybe show ALL products?
-            // searchResults = databaseRW.getAllProducts(); // if supported
             System.out.println("Please type a keyword.");
         }
-
         cusView.updateProductList(searchResults);
     }
 
