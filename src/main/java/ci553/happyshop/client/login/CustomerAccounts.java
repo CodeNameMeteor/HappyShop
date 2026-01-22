@@ -24,7 +24,7 @@ public class CustomerAccounts {
             System.out.println("No accounts found. Creating default admin.");
             addAccount(new AdminAccount("admin", "admin@shop.com", "admin123", false));
             addAccount(new CustomerAccount("frank", "frankscott@gmail.com", "scott", false));
-            addAccount(new PickerAccount("picker", "picker@pick.com", "picker", false));
+            addAccount(new PickerAccount("picker", "picker@pick.com", "picker123", false));
         }
     }
 
@@ -67,13 +67,12 @@ public class CustomerAccounts {
         if (currentAccount == null) return "NONE";
         return currentAccount.getAccountType();
     }
-
+    //write accounts to the file.
+    //writes text to a character output stream, buffering characters to efficiently write single characters arrays and strings.
     /**
      * saveAccounts writes new accounts to the stored user file
      */
     private void saveAccounts() {
-        //write accounts to the file.
-        //writes text to a character output stream, buffering characters to efficiently write single characters arrays and strings.
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
             for (Account acc : accounts) {
                 writer.write(acc.toFileString());
