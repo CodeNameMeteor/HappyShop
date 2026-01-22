@@ -1,22 +1,32 @@
 # HappyShop
 
-A JavaFX project developed in IntelliJ using Maven and JDK 21 (the latest LTS version at development in 2025), designed
-for CI553 coursework.
+Happy shop is a simulated E-Commerce solution using JavaFX, featuring a complete MVC architechure. Designed for CI553.
 
-## ➡️ Setup
+## Technologies Used 
+* **Language:** Java (JDK 21 - LTS)
+* **Framework:** JavaFX
+* **Build Tool:** Maven
+* **IDE:** IntelliJ IDEA
+* **Testing:** JUnit 5
+  
+## First Time Setup
 
-After opening the project in IntelliJ:
+1. Open The Project in IntelliJ
+2. Navigate to the `systemSetup` package.
+3. Run `SetOrderFileSystem` and `SetDatabase` **once only** to set up initial files and database.
 
-- Go to the `systemSetup` package.
-- Run `SetOrderFileSystem` and `SetDatabase` **once only** to set up initial files and database.
+## Running Happyshop
 
-## 🚀 Running the System
+1. Navigate to the root package.
+2. Run `Launcher.Java`.
 
-- Run `Launcher` each time you want to start the system.
+## Default User Credentials
+| Role | Username | Password |
+| :--- | :--- | :--- |
+| **Customer** | `frank` | `scott` |
+| **Admin** | `admin` | `admin123` |
+| **Picker** | `picker` | `picker123` |
 
-## 📌 Summary
+All user data is stored in 'users.txt' stored in the root directory.
 
-✅ JavaFX project  
-✅ Developed in IntelliJ with Maven  
-✅ Designed for CI553 coursework  
-✅ Easy setup and clean structure
+
